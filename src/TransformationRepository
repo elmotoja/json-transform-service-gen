@@ -1,0 +1,19 @@
+def TransformationsRepository(argument):
+    def trans1(arg):
+        return arg*2
+
+    def trans2(arg):
+        return arg*3
+
+    def trans3(arg):
+        return arg*4
+
+    if type(argument) == int:
+        return trans1
+    elif type(argument) == str:
+        return trans2
+    else:
+        return trans3
+
+if __name__ == '__main__':
+    print TransformationsRepository(123)
