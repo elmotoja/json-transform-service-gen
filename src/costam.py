@@ -1,13 +1,17 @@
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, jsonify
 import json
+
 services = Flask(__name__)
+
 
 @services.route('/')
 def main():
-    return '<h1>"Services main Page!"</h1>'
+    services.logger.warning('TEST!TEST!TEST')
+    return jsonify(str(request))
 
 @services.route('/RGB/', methods = ['POST', 'GET'])
 def rgb():
+    services.logger.warning('TEST!TEST!TEST')
     return str(request.get_json())
 
 @services.route('/RGBColourtoRGBColour', methods = ['GET', 'POST'])
@@ -22,4 +26,4 @@ def RGBColourtoRGBColour():
     return json.dumps(JSON_output)
 
 if __name__ == '__main__':
-    services.run()
+    services.run(debug=True)

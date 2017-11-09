@@ -1,0 +1,20 @@
+{
+    "title": "Type Test",
+    "type": "object",
+    "properties": {
+        "Something": {
+            "type": "integer"
+    },
+    "SomethingDifferent": {
+            "type": "string"
+    },
+    "Thing":{
+        "Inside":{
+            "type": "string"
+        },
+        "AnotherThing":{
+            "type": "string"
+        }
+    }
+}
+}

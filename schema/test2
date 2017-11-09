@@ -1,0 +1,15 @@
+{
+    "title": "Type Test2",
+    "type": "object",
+    "properties": {
+        "Something": {
+            "type": "string"
+    },
+    "SomethingDifferent": {
+            "type": "string"
+    },
+    "Thing":{
+            "type": "string"
+        }
+}
+}
