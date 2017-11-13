@@ -20,10 +20,10 @@ def main(argv):
     gen = config_default()
 
     try:
-        opts, args = getopt.getopt(argv, "hi:o:d:t:pr", ["ifile=", "ofile=", "--dictionary=",
-                                                          "--template=", "--print", "--run"])
-    except getopt.GetoptError:
-        print 'test.py -i <inputfile> -o <outputfile>'
+        opts, args = getopt.getopt(argv, "hi:o:d:f:t:pr", ["ifile=", "ofile=", "--dictionary=",
+                                                         "--template=", "--print", "--run", "--rdf="])
+    except getopt.GetoptError as err:
+        print err.message, 'dupa'
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
@@ -36,12 +36,16 @@ def main(argv):
             gen.load_schemas_from_file(inputfile, outputfile)
         elif opt in ("-d", "--dictionary"):
             gen.add_dictionary(str(arg))
+        elif opt in ("-f","--rdf"):
+            rdf_file_path = arg
+            gen.load_rdf_from_file(rdf_file_path)
         elif opt in ("-t", "--template"):
             gen.set_template_path(str(arg))
         elif opt in ("-p", "--print"):
             print gen.generate_code()
         elif opt in ("-r", "--run"):
             gen.run_service()
+
 
 # if __name__ == '__main__':
 #     try:

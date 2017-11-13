@@ -1,0 +1,21 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:	<http://www.w3.org/2002/07/owl#> .
+@prefix tmp: <http://www.temperature.org/> .
+
+tmp:Temperature rdf:type owl:Class .
+tmp:Temperature rdfs:label "Temperature" .
+
+tmp:Air_temperature rdf:type owl:Class .
+tmp:Air_temperature rdfs:label "Air_temperature" .
+tmp:Air_temperature rdfs:subClassOf tmp:Temperature .
+
+tmp:TestClass rdf:type owl:Class .
+tmp:TestClass rdfs:label "Test Class" .
+tmp:TestClass rdfs:subClassOf tmp:Air_temperature .
+
+tmp:TestClass2 rdf:type owl:Class .
+tmp:TestClass2 rdfs:label "Test Class2" .
+tmp:TestClass2 rdfs:subClassOf tmp:Temperature .
+
+
