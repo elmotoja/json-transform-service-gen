@@ -4,9 +4,10 @@ import sys
 
 import rdflib
 from jinja2 import Environment, FileSystemLoader
+from nested_lookup import nested_lookup
 
-import transforms
-from synonymdict import SynonymDict
+from src import transforms
+from .synonymdict import SynonymDict
 
 # def ObjectFromSchemaFactory(schema):
 #     builder = pjs.ObjectBuilder(schema)
@@ -21,7 +22,7 @@ logger.setLevel(logging.DEBUG)
 
 
 # import python_jsonschema_objects as pjs
-# TODO rdflib
+# TODO: Nested dicts support
 
 class JSONGenerator:
     def __init__(self):
