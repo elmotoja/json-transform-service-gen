@@ -31,7 +31,7 @@ class SynonymDict:
         """
         logger.debug('Loading from: {}'.format(file_path))
         logger.debug('Before: {}'.format(str(self.dict)))
-        with open(file_path, 'rb') as csvfile:
+        with open(file_path, 'r') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=delimiter)
             for x in spamreader:
                 self.dict.append(x)
@@ -73,11 +73,11 @@ class SynonymDict:
         self.dict = list()
 
 
-if __name__ == '__main__':
-    dic = SynonymDict()
-    dic.load_from_file('test_dic.csv')
-    print dic
-    print '\n'
+# if __name__ == '__main__':
+#     dic = SynonymDict()
+#     dic.load_from_file('test_dic.csv')
+#     print dic
+#     print '\n'
     # print dic.synonyms(sys.argv[1:])
 
     # print dic.is_synonym(sys.argv[1], sys.argv[2])

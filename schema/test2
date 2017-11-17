@@ -3,13 +3,12 @@
     "type": "object",
     "properties": {
         "Something": {
-            "type": "string"
-    },
-    "SomethingDifferent": {
-            "type": "string"
-    },
-    "Thing":{
-            "type": "string"
-        }
+            "Thing": {
+                "type": "string"
+                    },
+            "InsideThing": {
+                "type": "integer"
+            }
+    }
 }
 }

@@ -5,7 +5,7 @@ import logging
 
 console = logging.StreamHandler()
 console.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+formatter = logging.Formatter('%(name)-12s: %(funcName)-8s %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
@@ -23,11 +23,11 @@ def main(argv):
         opts, args = getopt.getopt(argv, "hi:o:d:f:t:pr", ["ifile=", "ofile=", "--dictionary=",
                                                          "--template=", "--print", "--run", "--rdf="])
     except getopt.GetoptError as err:
-        print err.message, 'dupa'
+        print(err.message)
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print 'test.py -i <inputfile> -o <outputfile>'
+            print('test.py -i <inputfile> -o <outputfile>')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
@@ -42,7 +42,7 @@ def main(argv):
         elif opt in ("-t", "--template"):
             gen.set_template_path(str(arg))
         elif opt in ("-p", "--print"):
-            print gen.generate_code()
+            print (gen.generate_code())
         elif opt in ("-r", "--run"):
             gen.run_service()
 

@@ -1,19 +1,23 @@
 import json
 import logging
+import sys
+
 import rdflib
-from synonymdict import SynonymDict
 from jinja2 import Environment, FileSystemLoader
+
+import transforms
+from synonymdict import SynonymDict
 
 # def ObjectFromSchemaFactory(schema):
 #     builder = pjs.ObjectBuilder(schema)
 #     clasessRepository = builder.build_classes()
 #     return clasessRepository
-import transforms
 
 logger = logging.getLogger('Generator')
 logger.setLevel(logging.DEBUG)
 
-import PyDictionary
+
+# import PyDictionary
 
 
 # import python_jsonschema_objects as pjs
@@ -24,11 +28,11 @@ class JSONGenerator:
         self._template = None
         self._INPUT_SCHEMA = {}
         self._OUTPUT_SCHEMA = {}
-        self._USER_DICT = None #SynonymDict()
+        self._USER_DICT = None  # SynonymDict()
         self._USER_RDF = None
         logger.debug('{} created!'.format(self.__class__.__name__))
 
-    def set_template_path(self, file_path='../templates/service_template.py'):
+    def set_template_path(self, file_path='../templates/python_service.py'):
         template_folder_path = '/'.join(file_path.split('/')[:-1])
         template_file = file_path.split('/')[-1]
         env = Environment(loader=FileSystemLoader(template_folder_path))
@@ -59,11 +63,13 @@ class JSONGenerator:
     def transform(self, target_structure, given_structure):
 
         matches = []
+        # logger.debug(target_structure)
         for field in target_structure.keys():
             # matches.append(self.match_transformation(field))
             if field in given_structure.keys():
                 logger.debug('{0} matched to {0}'.format(field))
-                matches.append(self._match_types(field, field))
+                matches.append(self._match_types({field: target_structure[field]},
+                                                 {field: given_structure[field]}))
             else:
                 if self._USER_DICT:
                     logger.debug('Property \'{}\' not found.'
@@ -71,7 +77,8 @@ class JSONGenerator:
                     for synon in self._USER_DICT.synonyms(field)[field]:
                         if synon in given_structure.keys():
                             logger.debug('Matching synonym found: {}'.format(synon))
-                            matches.append(self._match_types(synon, field))
+                            matches.append(self._match_types({field: target_structure[field]},
+                                                             {synon: given_structure[synon]}))
             if self._USER_RDF:
                 logger.debug('Property \'{}\' not found.'
                              ' Known subclasses: {}'.format(field, str(self.RDF_subclass(field))))
@@ -98,8 +105,21 @@ class JSONGenerator:
         """
         Very stupid way to match fields' types
         """
-        inputStructure = self._INPUT_SCHEMA['properties'][InputField]
-        outputStructre = self._OUTPUT_SCHEMA['properties'][OutputField]
+        # inputStructure = self._INPUT_SCHEMA['properties'][InputField]
+        # outputStructre = self._OUTPUT_SCHEMA['properties'][OutputField]
+        # logger.warning(list(InputField))
+        # inputStructure = InputField[list(InputField)[0]]
+        # InputField = list(InputField.keys())
+        # InputField, inputStructure = InputField.items()
+        for k, v in InputField.items():
+            InputField, inputStructure = k, v
+
+        for k, v in OutputField.items():
+            OutputField, outputStructre = k, v
+
+        # outputStructre = OutputField[list(OutputField)[0]]
+        # OutputField = list(OutputField.keys())
+
         type = 'type'
 
         if type not in inputStructure and type not in outputStructre:
@@ -108,6 +128,7 @@ class JSONGenerator:
                 return [InputField, OutputField, transforms.simple_pass.__name__]
             else:
                 # przeszukaj rozniace sie struktury
+                # return self.transform(inputStructure, outputStructre)
                 return None
         if type not in inputStructure and type in outputStructre:
             logger.debug('Field to Structure')
@@ -131,15 +152,22 @@ class JSONGenerator:
             out = self._OUTPUT_SCHEMA['title'].replace(' ', '')
         except Exception:
             logger.warning('Tried to generate code without schemas')
+            return
 
-        filling = self.transform(self._OUTPUT_SCHEMA['properties'], self._INPUT_SCHEMA['properties'])
+        filling = list(self.transform(self._OUTPUT_SCHEMA['properties'], self._INPUT_SCHEMA['properties']))
+        # logger.debug(filling)
         imports = list(set([trans[2] for trans in filling]))
+        # logger.debug(imports)
 
-        if len(filling) != 0:
-            logger.debug('Code generated!')
-            return self._template.render(input_format=inp, output_format=out, filling=filling, imports=imports)
+        if len(filling) == 0:
+            logger.debug('Nothing matched')
+            return
         else:
-            return []
+            try:
+                logger.debug('Code generated!')
+                return self._template.render(input_format=inp, output_format=out, filling=filling, imports=imports)
+            except TypeError as e:
+                logger.warning('Template must be set before generating service')
 
     def run_service(self):
         # A gdyby porty returnowac do flaska a stamtad przekierowywac na odpowiednie uslugi?
@@ -150,19 +178,26 @@ class JSONGenerator:
             service_file.write(self.generate_code())
         Popen(['python', new_file], creationflags=CREATE_NEW_CONSOLE)
 
-    def RDF_subclass(self,thing):
+    def RDF_subclass(self, thing):
         try:
-            prefix = "tmp"
-            thing_with_prefix = ':'.join((prefix, thing.capitalize()))
-            logger.debug('RDF query for: {}'.format(thing_with_prefix))
+            # prefix = "tmp"
+            # thing_with_prefix = ':'.join((prefix, thing.capitalize()))
+            # logger.debug('RDF query for: {}'.format(thing_with_prefix))
+
+            # qres = self._USER_RDF.query(
+            #     """SELECT ?label WHERE {
+            #     ?subClass rdfs:subClassOf* %s .
+            #     ?subClass rdfs:label ?label .
+            #        }""" % thing_with_prefix)
 
             qres = self._USER_RDF.query(
-                """SELECT ?label WHERE {
-                ?subClass rdfs:subClassOf* %s .
-                ?subClass rdfs:label ?label .
-                   }""" % thing_with_prefix)
+                 'SELECT ?label WHERE {' +
+                 f'?Class rdfs:label {thing} .' +
+                 '?subClass rdfs:subClassOf* ?Class .' +
+                 '?subClass rdfs:label ?label}')
+
             sub = ['%s' % row for row in qres]
-            subclasses = [s.decode('utf-8').lower() for s in sub]
+            subclasses = [s.lower() for s in sub]
             # logger.debug(subclasses)
             return subclasses
         except AttributeError:
@@ -188,14 +223,15 @@ class JSONGenerator:
 if __name__ == '__main__':
     console = logging.StreamHandler()
     console.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+    formatter = logging.Formatter('%(name)-s:%(lineno)-14s: %(funcName)16s(): %(message)s')
     console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
 
     gen = JSONGenerator()
+    gen.set_template_path()
     gen.add_dictionary('rgb.csv')
-    gen.load_rdf_from_file('temperature.rdf')
-    gen.RDF_synonym()
-    # gen.load_schemas(sys.argv[1], sys.argv[2])
-    # print gen.generate_code()
+    # gen.load_rdf_from_file('temperature.rdf')
+    # gen.RDF_synonym()
+    gen.load_schemas_from_file(sys.argv[1], sys.argv[2])
+    print(gen.generate_code())
     # gen.run_service()
