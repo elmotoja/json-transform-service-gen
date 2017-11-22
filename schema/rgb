@@ -2,6 +2,7 @@
     "title": "RGB Colour",
     "type": "object",
     "properties": {
+    "rgb":{
         "Red": {
             "type": "integer",
             "minimum": 0,
@@ -17,6 +18,6 @@
             "minimum": 0,
             "maximum": 255
         }
-    },
-    "required": ["Red", "Green", "Blue"]
+    }
+    }
 }

@@ -8,11 +8,15 @@ service = Flask(__name__)
 @service.route('/{{input_format}}to{{output_format}}', methods = ['GET', 'POST'])
 def {{input_format}}to{{output_format}}():
     JSON_input = request.get_json()
+    # Validate input
     JSON_output = dict()
     {% for match in filling %}
     JSON_output['{{match[1]}}'] = transforms.{{match[2]}}(JSON_input['{{match[0]}}'])
     {% endfor %}
+
+    # Validate output
     return json.dumps(JSON_output)
+
 
 if __name__ == '__main__':
     service.run(port=0)

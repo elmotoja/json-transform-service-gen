@@ -4,10 +4,15 @@ import sys
 
 import rdflib
 from jinja2 import Environment, FileSystemLoader
-from nested_lookup import nested_lookup
 
-from src import transforms
-from .synonymdict import SynonymDict
+from src.synonymdict import SynonymDict
+import src.transforms as transforms
+
+from nested_lookup import nested_lookup
+# https://github.com/russellballestrini/nested-lookup
+# from utils import find_path
+# import transforms
+# from synonymdict import SynonymDict
 
 # def ObjectFromSchemaFactory(schema):
 #     builder = pjs.ObjectBuilder(schema)
@@ -18,11 +23,13 @@ logger = logging.getLogger('Generator')
 logger.setLevel(logging.DEBUG)
 
 
+
 # import PyDictionary
 
 
 # import python_jsonschema_objects as pjs
 # TODO: Nested dicts support
+# TODO: RDF processor
 
 class JSONGenerator:
     def __init__(self):
@@ -47,7 +54,7 @@ class JSONGenerator:
     def load_rdf_from_file(self, file_path, format='n3'):
         self._USER_RDF = rdflib.Graph()
         self._USER_RDF.parse(file_path, format=format)
-        logger.debug('RDF loaded from path: {}'.format(file_path))
+        logger.debug(f'RDF loaded from path: {file_path}')
 
     def load_rdf_from_url(self):
         raise NotImplementedError('Function not implemented yet!')
@@ -62,31 +69,31 @@ class JSONGenerator:
         raise NotImplementedError('Function not implemented yet!')
 
     def transform(self, target_structure, given_structure):
-
         matches = []
         # logger.debug(target_structure)
         for field in target_structure.keys():
             # matches.append(self.match_transformation(field))
-            if field in given_structure.keys():
-                logger.debug('{0} matched to {0}'.format(field))
+            if nested_lookup(field, given_structure):
+                logger.debug(f'{field} matched')
                 matches.append(self._match_types({field: target_structure[field]},
-                                                 {field: given_structure[field]}))
+                                                 {field: nested_lookup(field, given_structure)[0]}))
             else:
                 if self._USER_DICT:
-                    logger.debug('Property \'{}\' not found.'
-                                 ' Known synonyms: {}'.format(field, str(self._USER_DICT.synonyms(field)[field])))
+                    logger.debug(f'Property \'{field}\' not found.'
+                                 ' Known synonyms: {0}'.format(str(self._USER_DICT.synonyms(field)[field])))
                     for synon in self._USER_DICT.synonyms(field)[field]:
-                        if synon in given_structure.keys():
-                            logger.debug('Matching synonym found: {}'.format(synon))
+                        if nested_lookup(synon, given_structure):#synon in given_structure.keys():
+                            logger.debug(f'Matching synonym found: {synon}')
                             matches.append(self._match_types({field: target_structure[field]},
-                                                             {synon: given_structure[synon]}))
+                                                             {synon: nested_lookup(synon, given_structure)[0]}))
             if self._USER_RDF:
-                logger.debug('Property \'{}\' not found.'
-                             ' Known subclasses: {}'.format(field, str(self.RDF_subclass(field))))
+                logger.debug(f'Property \'{field}\' not found.'
+                             ' Known subclasses: {0}'.format(str(self.RDF_subclass(field))))
                 for subclass in self.RDF_subclass(field):
                     if subclass in given_structure.keys():
-                        logger.debug('Matching subclass found: {}'.format(subclass))
-                        matches.append(self._match_types(subclass, field))
+                        logger.debug(f'Matching subclass found: {subclass}')
+                        matches.append(self._match_types({subclass: target_structure[subclass]},
+                                                         {field: given_structure[field]}))
         return filter(None, matches)
 
     # def match_transformation(self, field):
@@ -106,23 +113,13 @@ class JSONGenerator:
         """
         Very stupid way to match fields' types
         """
-        # inputStructure = self._INPUT_SCHEMA['properties'][InputField]
-        # outputStructre = self._OUTPUT_SCHEMA['properties'][OutputField]
-        # logger.warning(list(InputField))
-        # inputStructure = InputField[list(InputField)[0]]
-        # InputField = list(InputField.keys())
-        # InputField, inputStructure = InputField.items()
         for k, v in InputField.items():
             InputField, inputStructure = k, v
 
         for k, v in OutputField.items():
             OutputField, outputStructre = k, v
 
-        # outputStructre = OutputField[list(OutputField)[0]]
-        # OutputField = list(OutputField.keys())
-
         type = 'type'
-
         if type not in inputStructure and type not in outputStructre:
             logger.debug('Structure to Structure: {} to {}'.format(InputField, OutputField))
             if self._struct_cmp(inputStructure, outputStructre):
@@ -130,13 +127,13 @@ class JSONGenerator:
             else:
                 # przeszukaj rozniace sie struktury
                 # return self.transform(inputStructure, outputStructre)
-                return None
+                return
         if type not in inputStructure and type in outputStructre:
             logger.debug('Field to Structure')
-            return None
+            return
         if type in inputStructure and type not in outputStructre:
             logger.debug('Structure to Field')
-            return None
+            return
         if inputStructure['type'] == outputStructre['type']:
             return [InputField, OutputField, transforms.simple_pass.__name__]
         else:
@@ -146,6 +143,16 @@ class JSONGenerator:
                 return [InputField, OutputField, getattr(transforms, method).__name__]
             except AttributeError:
                 raise NotImplementedError('{} transformation is not implemented yet!')
+
+    def _struct_cmp(self, struct1, struct2):
+        if struct1 == struct2:
+            return True
+        else:
+            logger.warning('Differences in structures')
+            return False
+
+    def _path_to(self, field):
+
 
     def generate_code(self):
         try:
@@ -185,17 +192,11 @@ class JSONGenerator:
             # thing_with_prefix = ':'.join((prefix, thing.capitalize()))
             # logger.debug('RDF query for: {}'.format(thing_with_prefix))
 
-            # qres = self._USER_RDF.query(
-            #     """SELECT ?label WHERE {
-            #     ?subClass rdfs:subClassOf* %s .
-            #     ?subClass rdfs:label ?label .
-            #        }""" % thing_with_prefix)
-
-            qres = self._USER_RDF.query(
-                 'SELECT ?label WHERE {' +
-                 f'?Class rdfs:label {thing} .' +
-                 '?subClass rdfs:subClassOf* ?Class .' +
-                 '?subClass rdfs:label ?label}')
+            qres = self._USER_RDF.query("""SELECT ?label WHERE {
+                                        ?Class rdfs:label "%s" .
+                                        ?subClass rdfs:subClassOf* ?Class .
+                                        ?subClass rdfs:label ?label .
+                                        }""" % thing.capitalize())
 
             sub = ['%s' % row for row in qres]
             subclasses = [s.lower() for s in sub]
@@ -212,13 +213,6 @@ class JSONGenerator:
         synonyms = ['%s' % row for row in qres]
         logger.debug(synonyms)
         return synonyms
-
-    def _struct_cmp(self, struct1, struct2):
-        if struct1 == struct2:
-            return True
-        else:
-            logger.warning('Differences in structures')
-            return False
 
 
 if __name__ == '__main__':

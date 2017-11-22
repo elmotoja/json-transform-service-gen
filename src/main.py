@@ -4,8 +4,8 @@ import getopt
 import logging
 
 console = logging.StreamHandler()
-console.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(name)-12s: %(funcName)-8s %(message)s')
+# console.setLevel(logging.WARNING)
+formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
@@ -21,7 +21,7 @@ def main(argv):
 
     try:
         opts, args = getopt.getopt(argv, "hi:o:d:f:t:pr", ["ifile=", "ofile=", "--dictionary=",
-                                                         "--template=", "--print", "--run", "--rdf="])
+                                                           "--template=", "--print", "--run", "--rdf="])
     except getopt.GetoptError as err:
         print(err.message)
         sys.exit(2)
@@ -36,13 +36,13 @@ def main(argv):
             gen.load_schemas_from_file(inputfile, outputfile)
         elif opt in ("-d", "--dictionary"):
             gen.add_dictionary(str(arg))
-        elif opt in ("-f","--rdf"):
+        elif opt in ("-f", "--rdf"):
             rdf_file_path = arg
             gen.load_rdf_from_file(rdf_file_path)
         elif opt in ("-t", "--template"):
             gen.set_template_path(str(arg))
         elif opt in ("-p", "--print"):
-            print (gen.generate_code())
+            print(gen.generate_code())
         elif opt in ("-r", "--run"):
             gen.run_service()
 

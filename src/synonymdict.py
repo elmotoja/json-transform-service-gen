@@ -58,8 +58,6 @@ class SynonymDict:
         """
         Returns True if words are synonyms or False if they don't
         """
-        # logging.debug('If {} in: '.format(firstWord) + str(self.synonyms(secondWord)[secondWord]))
-        # logging.debug('If {} in: '.format(secondWord) + str(self.synonyms(firstWord)[firstWord]))
         if firstWord in self.synonyms(secondWord)[secondWord] \
                 or secondWord in self.synonyms(firstWord)[firstWord]:
             return True
