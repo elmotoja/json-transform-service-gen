@@ -5,53 +5,23 @@
     "id": "http://api.open-notify.org/iss-now.json",
     "properties": {
         "iss_position": {
-            "id": "/properties/iss_position",
-            "properties": {
                 "latitude": {
-                    "default": "-16.7865",
-                    "description": "An explanation about the purpose of this instance.",
-                    "examples": [
-                        "-16.7865"
-                    ],
-                    "id": "/properties/iss_position/properties/latitude",
-                    "title": "The latitude schema.",
                     "type": "string"
                 },
                 "longitude": {
-                    "default": "-170.2259",
-                    "description": "An explanation about the purpose of this instance.",
-                    "examples": [
-                        "-170.2259"
-                    ],
-                    "id": "/properties/iss_position/properties/longitude",
-                    "title": "The longitude schema.",
                     "type": "string"
                 }
             },
             "type": "object"
         },
         "message": {
-            "default": "success",
-            "description": "An explanation about the purpose of this instance.",
-            "examples": [
-                "success"
-            ],
-            "id": "/properties/message",
-            "title": "The message schema.",
             "type": "string"
         },
         "timestamp": {
-            "default": 1508313950,
-            "description": "An explanation about the purpose of this instance.",
-            "examples": [
-                "1508313950"
-            ],
-            "id": "/properties/timestamp",
-            "title": "The timestamp schema.",
             "type": "integer"
         }
     },
     "type": "object"
 }
 
-"localization":{"lat":13, "long": 65}
+"localization":{"latitude":13, "long": "65"}
