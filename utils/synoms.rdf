@@ -1,0 +1,13 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:	<http://www.w3.org/2002/07/owl#> .
+@prefix syn: <http://www.synoms.org/> .
+
+syn:Test rdf:type owl:Class .
+syn:Test rdfs:label "Test", "Proba", "Tescik" .
+
+syn:Test2 rdf:type owl:Class .
+syn:Test2 rdfs:label "Test2" .
+syn:Test2 rdfs:label "Proba2" .
+syn:Test2 rdfs:label "Tescik2" .
+

@@ -1,5 +1,8 @@
-{aaa:{bbb:{ccc: 45}}}
+{response:{bbb:{ccc: 45}}}
 
+{response:{rgb:{r,g,b}}}
+
+{rgb:{r,b}}
 
 {
 aaa:{bbb:...}

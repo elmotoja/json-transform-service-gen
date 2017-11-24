@@ -5,10 +5,12 @@ import sys
 import rdflib
 from jinja2 import Environment, FileSystemLoader
 
-from src.synonymdict import SynonymDict
-import src.transforms as transforms
+from synonymdict import SynonymDict
+import transforms as transforms
+from process_dict import process_dict
 
 from nested_lookup import nested_lookup
+from dictquery import DictQuery as dq
 # https://github.com/russellballestrini/nested-lookup
 # from utils import find_path
 # import transforms
@@ -36,6 +38,7 @@ class JSONGenerator:
         self._template = None
         self._INPUT_SCHEMA = {}
         self._OUTPUT_SCHEMA = {}
+        self._PROCESSED_INPUT = None
         self._USER_DICT = None  # SynonymDict()
         self._USER_RDF = None
         logger.debug('{} created!'.format(self.__class__.__name__))
@@ -63,6 +66,7 @@ class JSONGenerator:
         with open(input_schem, 'r') as inFile, \
                 open(output_schem, 'r') as outFile:
             self._INPUT_SCHEMA = json.loads(inFile.read())
+            self._PROCESSED_INPUT = self._process_input_schema()
             self._OUTPUT_SCHEMA = json.loads(outFile.read())
 
     def load_schemas_from_url(self):
@@ -151,8 +155,11 @@ class JSONGenerator:
             logger.warning('Differences in structures')
             return False
 
-    def _path_to(self, field):
-
+    def get_nested(self, my_dict, keys=[]):
+        key = keys.pop(0)
+        if len(keys) == 0:
+            return my_dict[key]
+        return self.get_nested(my_dict[key], keys)
 
     def generate_code(self):
         try:
@@ -188,10 +195,6 @@ class JSONGenerator:
 
     def RDF_subclass(self, thing):
         try:
-            # prefix = "tmp"
-            # thing_with_prefix = ':'.join((prefix, thing.capitalize()))
-            # logger.debug('RDF query for: {}'.format(thing_with_prefix))
-
             qres = self._USER_RDF.query("""SELECT ?label WHERE {
                                         ?Class rdfs:label "%s" .
                                         ?subClass rdfs:subClassOf* ?Class .
@@ -205,28 +208,63 @@ class JSONGenerator:
         except AttributeError:
             logger.warning('RDF must be added before query')
 
-    def RDF_synonym(self):
-        qres = self._USER_RDF.query(
-            """SELECT ?label WHERE {
-            ?label rdfs:label* %s.
-               }""" % "tmp:Temperature")
-        synonyms = ['%s' % row for row in qres]
-        logger.debug(synonyms)
-        return synonyms
+    def RDF_synonym(self, word):
+        try:
+            qres = self._USER_RDF.query("""SELECT ?label WHERE {
+                                        ?Class rdfs:label "%s".
+                                        ?Class rdfs:label* ?label.
+                                        }""" % word.capitalize())
+
+            synonyms = ['%s' % row for row in qres]
+            logger.debug(synonyms)
+            return synonyms
+        except AttributeError:
+            logger.warning('RDF must be added before query')
+
+    def _process_input_schema(self):
+        pre_processed = list()
+        for item in process_dict(self._INPUT_SCHEMA['properties']):
+            if item[0] in ('type', 'minimum', 'maximum', 'title', 'id', 'description', 'examples', 'default'):
+                continue
+            else:
+                pre_processed.append(item)
+        # remove duplicated paths
+        processed = list()
+        for record in pre_processed:
+            # compare values under key in preprocessed dict and original
+            if record[1] == dq(self._INPUT_SCHEMA['properties']).get('/'.join(record[2])):
+                processed.append(record)
+            else:
+                # remove record from list
+                continue
+        return processed
+
 
 
 if __name__ == '__main__':
-    console = logging.StreamHandler()
-    console.setLevel(logging.DEBUG)
+    fh = logging.FileHandler('generator.log')
+    fh.setLevel(logging.DEBUG)
+    # console = logging.StreamHandler()
+    # console.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(name)-s:%(lineno)-14s: %(funcName)16s(): %(message)s')
-    console.setFormatter(formatter)
-    logging.getLogger('').addHandler(console)
+    # console.setFormatter(formatter)
+    fh.setFormatter(formatter)
+    # logging.getLogger('').addHandler(console)
+    logging.getLogger('').addHandler(fh)
+
 
     gen = JSONGenerator()
     gen.set_template_path()
-    gen.add_dictionary('rgb.csv')
-    # gen.load_rdf_from_file('temperature.rdf')
+    # gen.add_dictionary('../utils/rgb.csv')
+    gen.load_rdf_from_file('../utils/synoms.rdf')
     # gen.RDF_synonym()
     gen.load_schemas_from_file(sys.argv[1], sys.argv[2])
-    print(gen.generate_code())
+    for x in gen._PROCESSED_INPUT:
+        print(x[:2], '/'.join(x[2]), '\n')
+    # gen.RDF_synonym('Test2')
+
+
+
+    # print(gen.generate_code())
     # gen.run_service()
+
