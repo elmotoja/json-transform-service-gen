@@ -13,7 +13,7 @@
             "minimum": 0,
             "maximum": 255
         },
-        "blue": {
+        "Blue": {
             "type": "string",
             "minimum": 0,
             "maximum": 255

@@ -1,12 +1,12 @@
 import json
 import logging
-from timeit import default_timer as timer
 import sys
 
 import rdflib
 from jinja2 import Environment, FileSystemLoader
 
 from synonymdict import SynonymDict
+from utils.schema import Schema
 from utils.rdfprocessor import RDFProcessor
 import transforms as transforms
 from process_dict import process_dict
@@ -38,7 +38,7 @@ logger.setLevel(logging.DEBUG)
 class JSONGenerator:
     def __init__(self):
         self._template = None
-        self._INPUT_SCHEMA = {}
+        self._INPUT_SCHEMA = None
         self._OUTPUT_SCHEMA = {}
         self._PROCESSED_INPUT = None
         self._PROCESSED_OUTPUT = None
@@ -70,23 +70,35 @@ class JSONGenerator:
         raise NotImplementedError('Function not implemented yet!')
 
     def load_schemas_from_file(self, input_schem, output_schem):
-        with open(input_schem, 'r') as inFile, \
-                open(output_schem, 'r') as outFile:
-            self._INPUT_SCHEMA = json.loads(inFile.read())
-            self._PROCESSED_INPUT = self._process_dict(self._INPUT_SCHEMA['properties'])
+        # with open(input_schem, 'r') as inFile, \
+        #         open(output_schem, 'r') as outFile:
+        #     self._INPUT_SCHEMA = json.loads(inFile.read())
+        #     self._PROCESSED_INPUT = self._process_dict(self._INPUT_SCHEMA['properties'])
+        #     self._OUTPUT_SCHEMA = json.loads(outFile.read())
+        #     self._PROCESSED_OUTPUT = self._process_dict(self._OUTPUT_SCHEMA['properties'])
+        with open(input_schem, 'r') as inFile:
+            self._INPUT_SCHEMA = Schema()
+            self._INPUT_SCHEMA.load_schema_from_file(input_schem)
+            logger.debug(f'Input schema loaded from: {input_schem}')
+        with open(output_schem, 'r') as outFile:
             self._OUTPUT_SCHEMA = json.loads(outFile.read())
+            logger.debug(f'Output schema loaded from: {output_schem}')
             self._PROCESSED_OUTPUT = self._process_dict(self._OUTPUT_SCHEMA['properties'])
 
-    def load_schemas_from_url(self):
-        raise NotImplementedError('Function not implemented yet!')
+    def load_schemas_from_url(self, input_url, output_path):
+        try:
+            self._INPUT_SCHEMA.load_schema_from_url(input_url)
+            # self._OUTPUT_SCHEMA.
+        except NotImplementedError as e:
+            logger.warning(f'{e}')
 
     def transform(self, target_structure, given_structure):
         matches = []
         for field in target_structure.keys():
-            if nested_lookup(field, given_structure):
+            if field in given_structure.keys():
                 logger.debug(f'Property \'{field}\' found.')
                 matches.append(self._match_types({field: target_structure[field]},
-                                                 {field: nested_lookup(field, given_structure)[0]}))
+                                                 {field: given_structure.value(field)}))
                 continue
             else:
                 logger.debug(f'Property \'{field}\' not found.')
@@ -94,27 +106,27 @@ class JSONGenerator:
                     replacements = self._USER_DICT.replacements(field)[field]
                     logger.debug(f'Known replacements: {str(replacements)}')
                     for replacement in replacements:
-                        if nested_lookup(replacement, given_structure):
+                        if replacement in given_structure.keys():
                             logger.debug(f'Matching replacement found: {replacement}')
                             matches.append(self._match_types({field: target_structure[field]},
-                                                             {replacement: nested_lookup(replacement, given_structure)[0]}))
+                                                             {replacement: given_structure.value(replacement)}))
                             continue
             if self._USER_RDF:
                 synonyms = self._USER_RDF.synonyms(field)
                 logger.debug(f'Known synonyms: {str(synonyms)}')
                 for synonym in synonyms:
-                    if nested_lookup(synonym, given_structure):
+                    if synonym in given_structure.keys():
                         logger.debug(f'Matching synonym found: {synonym}')
                         matches.append(self._match_types({field: target_structure[field]},
-                                                         {synonym: nested_lookup(synonym, given_structure)[0]}))
+                                                         {synonym: given_structure.value(synonym)}))
                         continue
                 subclasses = self._USER_RDF.subclasses(field)
                 logger.debug(f'Known subclasses: {str(subclasses)}')
                 for subclass in subclasses:
-                    if nested_lookup(subclass, given_structure):
+                    if subclass in given_structure.keys():
                         logger.debug(f'Matching subclass found: {subclass}')
                         matches.append(self._match_types({field: target_structure[field]},
-                                                         {subclass: nested_lookup(subclass, given_structure)[0]}))
+                                                         {subclass: given_structure.value(subclass)}))
                         continue
         return filter(None, matches)
 
@@ -146,32 +158,32 @@ class JSONGenerator:
             logger.debug('Structure to Structure: {} to {}'.format(InputField, OutputField))
             if self._struct_cmp(inputStructure, outputStructre):
                 return [self.find_path(InputField, self._PROCESSED_OUTPUT)[2],
-                        self.find_path(OutputField, self._PROCESSED_INPUT)[2],
+                        self._INPUT_SCHEMA.path(OutputField),
                         transforms.simple_pass.__name__]
             else:
                 # przeszukaj rozniace sie struktury
                 return self.transform(inputStructure, outputStructre)
                 # return
         if type not in inputStructure and type in outputStructre:
-            logger.debug('Field to Structure')
+            logger.warning('Field to Structure')
             return
         if type in inputStructure and type not in outputStructre:
-            logger.debug('Structure to Field')
+            logger.warning('Structure to Field')
             return
         if inputStructure['type'] == outputStructre['type']:
             # logger.debug(InputField)
             return [self.find_path(InputField, self._PROCESSED_OUTPUT)[2],
-                    self.find_path(OutputField, self._PROCESSED_INPUT)[2],
+                    self._INPUT_SCHEMA.path(OutputField),
                     transforms.simple_pass.__name__]
         else:
             # logger.warning(InputField)
             method = '{}2{}'.format(inputStructure['type'], outputStructre['type'])
             try:
                 return [self.find_path(InputField, self._PROCESSED_OUTPUT)[2],
-                        self.find_path(OutputField, self._PROCESSED_INPUT)[2],
+                        self._INPUT_SCHEMA.path(OutputField),
                         getattr(transforms, method).__name__]
             except AttributeError:
-                raise NotImplementedError('{} transformation is not implemented yet!')
+                raise NotImplementedError(f'{method} transformation is not implemented yet!')
 
     def _struct_cmp(self, struct1, struct2):
         if struct1 == struct2:
@@ -187,15 +199,14 @@ class JSONGenerator:
         return self.get_nested(my_dict[key], keys)
 
     def generate_code(self):
-        start = timer()
         try:
-            inp = self._INPUT_SCHEMA['title'].replace(' ', '')
+            inp = self._INPUT_SCHEMA.as_dict()['title'].replace(' ', '')
             out = self._OUTPUT_SCHEMA['title'].replace(' ', '')
         except Exception:
             logger.warning('Tried to generate code without schemas')
             return
 
-        filling = list(self.transform(self._OUTPUT_SCHEMA['properties'], self._INPUT_SCHEMA['properties']))
+        filling = list(self.transform(self._OUTPUT_SCHEMA['properties'], self._INPUT_SCHEMA))
         # logger.debug(filling)
         imports = list(set([trans[2] for trans in filling]))
         # logger.debug(imports)
@@ -205,8 +216,7 @@ class JSONGenerator:
             return
         else:
             try:
-                end = timer()
-                logger.debug(f'Code generated in {end-start}!')
+                logger.debug(f'Code generated!'+"\n"*2)
                 return self._template.render(input_format=inp, output_format=out, filling=filling, imports=imports)
             except TypeError as e:
                 logger.warning('Template must be set before generating service')

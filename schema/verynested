@@ -1,0 +1,23 @@
+{
+    "title": "RGB Colour",
+    "type": "object",
+    "properties": {
+        "rgb":{
+            "xxx": {
+                "aaa":{
+                    "blue":{
+                        "ccc":{
+                            "ddd":{
+                                "blue":{
+                                    "type": "string",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

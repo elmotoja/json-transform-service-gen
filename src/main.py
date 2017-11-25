@@ -5,7 +5,7 @@ import logging
 
 console = logging.StreamHandler()
 # console.setLevel(logging.WARNING)
-formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+formatter = logging.Formatter('%(name)-14s: %(levelname)-8s %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 

@@ -18,10 +18,10 @@ class RDFProcessor(object):
     def subclasses(self, thing):
         try:
             qres = self._RDF.query("""SELECT ?label WHERE {
-                                        ?Class rdfs:label "%s" .
-                                        ?subClass rdfs:subClassOf ?Class .
-                                        ?subClass rdfs:label ?label .
-                                        }""" % thing.capitalize())
+                                   ?Class rdfs:label "%s" .
+                                   ?subClass rdfs:subClassOf ?Class .
+                                   ?subClass rdfs:label ?label .
+                                   }""" % thing.capitalize())
 
             sub = ['%s' % row for row in qres]
             subclasses = [s.lower() for s in sub]
@@ -41,3 +41,8 @@ class RDFProcessor(object):
             return synonyms
         except AttributeError:
             logger.warning('RDF must be added before query')
+
+if __name__ == "__main__":
+    test = RDFProcessor()
+    test.load_rdf_from_file('../../rdf/colors.rdf')
+    print(test.synonyms('Red'))
