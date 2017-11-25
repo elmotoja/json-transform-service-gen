@@ -4,34 +4,13 @@
     "definitions": {},
     "id": "http://example.com/example.json",
     "properties": {
-        "Blue": {
-            "default": 103,
-            "description": "An explanation about the purpose of this instance.",
-            "examples": [
-                "103"
-            ],
-            "id": "/properties/blue",
-            "title": "The blue schema.",
+        "blue": {
             "type": "integer"
         },
-        "kermitowy": {
-            "default": 102,
-            "description": "An explanation about the purpose of this instance.",
-            "examples": [
-                "102"
-            ],
-            "id": "/properties/green",
-            "title": "The green schema.",
+        "green": {
             "type": "string"
         },
-        "Czerwony": {
-            "default": 101,
-            "description": "An explanation about the purpose of this instance.",
-            "examples": [
-                "101"
-            ],
-            "id": "/properties/red",
-            "title": "The red schema.",
+        "czerwony": {
             "type": "integer"
         }
     },

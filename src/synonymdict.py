@@ -37,9 +37,9 @@ class SynonymDict:
                 self.dict.append(x)
         logger.debug('Loaded into dictionary: {}'.format(str(self.dict)))
 
-    def synonyms(self, words):
+    def replacements(self, words):
         """
-        Returns a dictionary wheres key is word and value is list of synonyms 
+        Returns a dictionary wheres key is word and value is list of replacements 
         """
         d = {}
         if type(words) != list:
@@ -54,19 +54,19 @@ class SynonymDict:
                     d[word].extend(filter(lambda x: x != word, synonyms))
         return d
 
-    def is_synonym(self, firstWord, secondWord):
+    def is_replacement(self, firstWord, secondWord):
         """
         Returns True if words are synonyms or False if they don't
         """
-        if firstWord in self.synonyms(secondWord)[secondWord] \
-                or secondWord in self.synonyms(firstWord)[firstWord]:
+        if firstWord in self.replacements(secondWord)[secondWord] \
+                or secondWord in self.replacements(firstWord)[firstWord]:
             return True
         else:
             return False
 
     def clear(self):
         """
-        Clears build in synonyms lists
+        Clears build in replacements lists
         """
         self.dict = list()
 

@@ -1,16 +1,19 @@
 import json
 import logging
+from timeit import default_timer as timer
 import sys
 
 import rdflib
 from jinja2 import Environment, FileSystemLoader
 
 from synonymdict import SynonymDict
+from utils.rdfprocessor import RDFProcessor
 import transforms as transforms
 from process_dict import process_dict
 
 from nested_lookup import nested_lookup
 from dictquery import DictQuery as dq
+
 # https://github.com/russellballestrini/nested-lookup
 # from utils import find_path
 # import transforms
@@ -23,7 +26,6 @@ from dictquery import DictQuery as dq
 
 logger = logging.getLogger('Generator')
 logger.setLevel(logging.DEBUG)
-
 
 
 # import PyDictionary
@@ -39,6 +41,7 @@ class JSONGenerator:
         self._INPUT_SCHEMA = {}
         self._OUTPUT_SCHEMA = {}
         self._PROCESSED_INPUT = None
+        self._PROCESSED_OUTPUT = None
         self._USER_DICT = None  # SynonymDict()
         self._USER_RDF = None
         logger.debug('{} created!'.format(self.__class__.__name__))
@@ -47,17 +50,21 @@ class JSONGenerator:
         template_folder_path = '/'.join(file_path.split('/')[:-1])
         template_file = file_path.split('/')[-1]
         env = Environment(loader=FileSystemLoader(template_folder_path))
-        logger.debug('Template loaded from path: {}'.format(file_path))
+        logger.debug(f'Template loaded from path: {file_path}')
         self._template = env.get_template(template_file)
 
     def add_dictionary(self, file_path):
         self._USER_DICT = SynonymDict()
         self._USER_DICT.load_from_file(file_path)
 
+    # def load_rdf_from_file(self, file_path, format='n3'):
+    #     self._USER_RDF = rdflib.Graph()
+    #     self._USER_RDF.parse(file_path, format=format)
+    #     logger.debug(f'RDF loaded from path: {file_path}')
     def load_rdf_from_file(self, file_path, format='n3'):
-        self._USER_RDF = rdflib.Graph()
-        self._USER_RDF.parse(file_path, format=format)
-        logger.debug(f'RDF loaded from path: {file_path}')
+        self._USER_RDF = RDFProcessor()
+        self._USER_RDF.load_rdf_from_file(file_path, format=format)
+        # logger.debug(f'RDF loaded from path: {file_path}')
 
     def load_rdf_from_url(self):
         raise NotImplementedError('Function not implemented yet!')
@@ -66,38 +73,49 @@ class JSONGenerator:
         with open(input_schem, 'r') as inFile, \
                 open(output_schem, 'r') as outFile:
             self._INPUT_SCHEMA = json.loads(inFile.read())
-            self._PROCESSED_INPUT = self._process_input_schema()
+            self._PROCESSED_INPUT = self._process_dict(self._INPUT_SCHEMA['properties'])
             self._OUTPUT_SCHEMA = json.loads(outFile.read())
+            self._PROCESSED_OUTPUT = self._process_dict(self._OUTPUT_SCHEMA['properties'])
 
     def load_schemas_from_url(self):
         raise NotImplementedError('Function not implemented yet!')
 
     def transform(self, target_structure, given_structure):
         matches = []
-        # logger.debug(target_structure)
         for field in target_structure.keys():
-            # matches.append(self.match_transformation(field))
             if nested_lookup(field, given_structure):
-                logger.debug(f'{field} matched')
+                logger.debug(f'Property \'{field}\' found.')
                 matches.append(self._match_types({field: target_structure[field]},
                                                  {field: nested_lookup(field, given_structure)[0]}))
+                continue
             else:
+                logger.debug(f'Property \'{field}\' not found.')
                 if self._USER_DICT:
-                    logger.debug(f'Property \'{field}\' not found.'
-                                 ' Known synonyms: {0}'.format(str(self._USER_DICT.synonyms(field)[field])))
-                    for synon in self._USER_DICT.synonyms(field)[field]:
-                        if nested_lookup(synon, given_structure):#synon in given_structure.keys():
-                            logger.debug(f'Matching synonym found: {synon}')
+                    replacements = self._USER_DICT.replacements(field)[field]
+                    logger.debug(f'Known replacements: {str(replacements)}')
+                    for replacement in replacements:
+                        if nested_lookup(replacement, given_structure):
+                            logger.debug(f'Matching replacement found: {replacement}')
                             matches.append(self._match_types({field: target_structure[field]},
-                                                             {synon: nested_lookup(synon, given_structure)[0]}))
+                                                             {replacement: nested_lookup(replacement, given_structure)[0]}))
+                            continue
             if self._USER_RDF:
-                logger.debug(f'Property \'{field}\' not found.'
-                             ' Known subclasses: {0}'.format(str(self.RDF_subclass(field))))
-                for subclass in self.RDF_subclass(field):
-                    if subclass in given_structure.keys():
+                synonyms = self._USER_RDF.synonyms(field)
+                logger.debug(f'Known synonyms: {str(synonyms)}')
+                for synonym in synonyms:
+                    if nested_lookup(synonym, given_structure):
+                        logger.debug(f'Matching synonym found: {synonym}')
+                        matches.append(self._match_types({field: target_structure[field]},
+                                                         {synonym: nested_lookup(synonym, given_structure)[0]}))
+                        continue
+                subclasses = self._USER_RDF.subclasses(field)
+                logger.debug(f'Known subclasses: {str(subclasses)}')
+                for subclass in subclasses:
+                    if nested_lookup(subclass, given_structure):
                         logger.debug(f'Matching subclass found: {subclass}')
-                        matches.append(self._match_types({subclass: target_structure[subclass]},
-                                                         {field: given_structure[field]}))
+                        matches.append(self._match_types({field: target_structure[field]},
+                                                         {subclass: nested_lookup(subclass, given_structure)[0]}))
+                        continue
         return filter(None, matches)
 
     # def match_transformation(self, field):
@@ -127,11 +145,13 @@ class JSONGenerator:
         if type not in inputStructure and type not in outputStructre:
             logger.debug('Structure to Structure: {} to {}'.format(InputField, OutputField))
             if self._struct_cmp(inputStructure, outputStructre):
-                return [InputField, OutputField, transforms.simple_pass.__name__]
+                return [self.find_path(InputField, self._PROCESSED_OUTPUT)[2],
+                        self.find_path(OutputField, self._PROCESSED_INPUT)[2],
+                        transforms.simple_pass.__name__]
             else:
                 # przeszukaj rozniace sie struktury
-                # return self.transform(inputStructure, outputStructre)
-                return
+                return self.transform(inputStructure, outputStructre)
+                # return
         if type not in inputStructure and type in outputStructre:
             logger.debug('Field to Structure')
             return
@@ -139,12 +159,17 @@ class JSONGenerator:
             logger.debug('Structure to Field')
             return
         if inputStructure['type'] == outputStructre['type']:
-            return [InputField, OutputField, transforms.simple_pass.__name__]
+            # logger.debug(InputField)
+            return [self.find_path(InputField, self._PROCESSED_OUTPUT)[2],
+                    self.find_path(OutputField, self._PROCESSED_INPUT)[2],
+                    transforms.simple_pass.__name__]
         else:
             # logger.warning(InputField)
             method = '{}2{}'.format(inputStructure['type'], outputStructre['type'])
             try:
-                return [InputField, OutputField, getattr(transforms, method).__name__]
+                return [self.find_path(InputField, self._PROCESSED_OUTPUT)[2],
+                        self.find_path(OutputField, self._PROCESSED_INPUT)[2],
+                        getattr(transforms, method).__name__]
             except AttributeError:
                 raise NotImplementedError('{} transformation is not implemented yet!')
 
@@ -162,6 +187,7 @@ class JSONGenerator:
         return self.get_nested(my_dict[key], keys)
 
     def generate_code(self):
+        start = timer()
         try:
             inp = self._INPUT_SCHEMA['title'].replace(' ', '')
             out = self._OUTPUT_SCHEMA['title'].replace(' ', '')
@@ -179,7 +205,8 @@ class JSONGenerator:
             return
         else:
             try:
-                logger.debug('Code generated!')
+                end = timer()
+                logger.debug(f'Code generated in {end-start}!')
                 return self._template.render(input_format=inp, output_format=out, filling=filling, imports=imports)
             except TypeError as e:
                 logger.warning('Template must be set before generating service')
@@ -193,37 +220,38 @@ class JSONGenerator:
             service_file.write(self.generate_code())
         Popen(['python', new_file], creationflags=CREATE_NEW_CONSOLE)
 
-    def RDF_subclass(self, thing):
-        try:
-            qres = self._USER_RDF.query("""SELECT ?label WHERE {
-                                        ?Class rdfs:label "%s" .
-                                        ?subClass rdfs:subClassOf* ?Class .
-                                        ?subClass rdfs:label ?label .
-                                        }""" % thing.capitalize())
+    # def RDF_subclass(self, thing):
+    #     try:
+    #         qres = self._USER_RDF.query("""SELECT ?label WHERE {
+    #                                     ?Class rdfs:label "%s" .
+    #                                     ?subClass rdfs:subClassOf ?Class .
+    #                                     ?subClass rdfs:label ?label .
+    #                                     }""" % thing.capitalize())
+    #
+    #         sub = ['%s' % row for row in qres]
+    #         subclasses = [s.lower() for s in sub]
+    #         # logger.debug(subclasses)
+    #         return subclasses
+    #     except AttributeError:
+    #         logger.warning('RDF must be added before query')
 
-            sub = ['%s' % row for row in qres]
-            subclasses = [s.lower() for s in sub]
-            # logger.debug(subclasses)
-            return subclasses
-        except AttributeError:
-            logger.warning('RDF must be added before query')
+    # def RDF_synonym(self, word):
+    #     try:
+    #         qres = self._USER_RDF.query("""SELECT ?label WHERE {
+    #                                     ?Class rdfs:label "%s".
+    #                                     ?Class rdfs:label ?label.
+    #                                     }""" % word.capitalize())
+    #
+    #         syn = ['%s' % row for row in qres]
+    #         synonyms = [s.lower() for s in syn]
+    #         # logger.debug(synonyms)
+    #         return synonyms
+    #     except AttributeError:
+    #         logger.warning('RDF must be added before query')
 
-    def RDF_synonym(self, word):
-        try:
-            qres = self._USER_RDF.query("""SELECT ?label WHERE {
-                                        ?Class rdfs:label "%s".
-                                        ?Class rdfs:label* ?label.
-                                        }""" % word.capitalize())
-
-            synonyms = ['%s' % row for row in qres]
-            logger.debug(synonyms)
-            return synonyms
-        except AttributeError:
-            logger.warning('RDF must be added before query')
-
-    def _process_input_schema(self):
+    def _process_dict(self, dictionary):
         pre_processed = list()
-        for item in process_dict(self._INPUT_SCHEMA['properties']):
+        for item in process_dict(dictionary):
             if item[0] in ('type', 'minimum', 'maximum', 'title', 'id', 'description', 'examples', 'default'):
                 continue
             else:
@@ -232,14 +260,17 @@ class JSONGenerator:
         processed = list()
         for record in pre_processed:
             # compare values under key in preprocessed dict and original
-            if record[1] == dq(self._INPUT_SCHEMA['properties']).get('/'.join(record[2])):
+            if record[1] == dq(dictionary).get('/'.join(record[2])):
                 processed.append(record)
             else:
                 # remove record from list
                 continue
         return processed
 
-
+    def find_path(self, key, processed):
+        for item in processed:
+            if item[0] == key:
+                return item
 
 if __name__ == '__main__':
     fh = logging.FileHandler('generator.log')
@@ -252,19 +283,26 @@ if __name__ == '__main__':
     # logging.getLogger('').addHandler(console)
     logging.getLogger('').addHandler(fh)
 
-
     gen = JSONGenerator()
     gen.set_template_path()
     # gen.add_dictionary('../utils/rgb.csv')
-    gen.load_rdf_from_file('../utils/synoms.rdf')
+    gen.load_rdf_from_file('../utils/colors.rdf')
     # gen.RDF_synonym()
-    gen.load_schemas_from_file(sys.argv[1], sys.argv[2])
+    gen.load_schemas_from_file('../schema/rgb', '../schema/rgb2')
+    print('INPUT:')
     for x in gen._PROCESSED_INPUT:
         print(x[:2], '/'.join(x[2]), '\n')
-    # gen.RDF_synonym('Test2')
+        # gen.RDF_synonym('Test2')
+
+    print('OUTPUT:')
+    for x in gen._PROCESSED_OUTPUT:
+        print(x[:2], '/'.join(x[2]), '\n')
 
 
+    # print(gen.find_path('deg', gen._PROCESSED_INPUT)[2])
+    # print(gen.RDF_synonym('Red'))
+    #
+    # print(gen.RDF_subclass('Green'))
 
     # print(gen.generate_code())
-    # gen.run_service()
-
+        # gen.run_service()

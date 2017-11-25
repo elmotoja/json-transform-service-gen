@@ -2,22 +2,22 @@
     "title": "RGB Colour",
     "type": "object",
     "properties": {
-    "rgb":{
-        "Red": {
+        "rgb":{
+        "red": {
             "type": "integer",
             "minimum": 0,
             "maximum": 255
         },
-        "Green": {
+        "grassy": {
             "type": "integer",
             "minimum": 0,
             "maximum": 255
         },
-        "Blue": {
+        "blue": {
             "type": "string",
             "minimum": 0,
             "maximum": 255
+                }
         }
-    }
     }
 }

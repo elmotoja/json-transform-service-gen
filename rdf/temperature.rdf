@@ -8,10 +8,12 @@ tmp:Temperature rdfs:label "Temperature" .
 
 tmp:Air_temperature rdf:type owl:Class .
 tmp:Air_temperature rdfs:label "Air_temperature" .
+tmp:Air_temperature rdfs:label "Air_temp" .
 tmp:Air_temperature rdfs:subClassOf tmp:Temperature .
 
 tmp:TestClass rdf:type owl:Class .
 tmp:TestClass rdfs:label "Test Class" .
+tmp:TestClass rdfs:label "Dummy" .
 tmp:TestClass rdfs:subClassOf tmp:Air_temperature .
 
 tmp:TestClass2 rdf:type owl:Class .

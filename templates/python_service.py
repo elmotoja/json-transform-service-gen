@@ -11,7 +11,7 @@ def {{input_format}}to{{output_format}}():
     # Validate input
     JSON_output = dict()
     {% for match in filling %}
-    JSON_output['{{match[1]}}'] = transforms.{{match[2]}}(JSON_input['{{match[0]}}'])
+    JSON_output{%for step in match[0]%}['{{step}}']{% endfor %} = transforms.{{match[2]}}(JSON_input{%for step in match[1]%}['{{step}}']{% endfor %})
     {% endfor %}
 
     # Validate output
