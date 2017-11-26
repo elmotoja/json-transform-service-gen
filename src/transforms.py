@@ -9,3 +9,11 @@ def integer2string(value):
 def string2integer(value):
     return int(value)
 
+
+def string2number(value):
+    return float(value)
+
+
+def integer2number(value):
+    return value
+

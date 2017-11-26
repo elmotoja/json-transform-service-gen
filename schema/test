@@ -5,10 +5,7 @@
         "Something": {
             "Thing": {
                 "type": "integer"
-                    },
-            "InsideThing": {
-                "type": "integer"
-            }
+                    }
     }
 }
 }

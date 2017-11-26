@@ -2,13 +2,10 @@
     "title": "Type Test2",
     "type": "object",
     "properties": {
-        "Something": {
+        "SomethingDifferent": {
             "Thing": {
                 "type": "string"
-                    },
-            "InsideThing": {
-                "type": "integer"
-            }
+                    }
     }
 }
 }

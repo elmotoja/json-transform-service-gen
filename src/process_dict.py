@@ -1,5 +1,5 @@
 import logging
-
+from collections import defaultdict
 
 def process_dict(d):
     for key, value in _rec(d):
@@ -38,17 +38,44 @@ def _find_in_obj(obj, condition, path=None):
                 yield new_path
 
 
+def dfs(graph, start):
+    visited, stack = set(), [start]
+    while stack:
+        vertex = stack.pop()
+        if vertex not in visited:
+            visited.add(vertex)
+            stack.extend(graph[vertex] - visited)
+    return visited
+
+
+def nesteddict():
+    return defaultdict(nesteddict())
+
 if __name__ == "__main__":
+
+
+
     test = {'x': 0,
             'a': {'b': {'c': {'d': 1}}},
             'aa': {'d': 'beng'}
             }
+    test2 = {"properties": {
+            'x': 0,
+            'a': {'b': {'c': {'d': 1}}},
+            'aa': {'d': 'beng'}
+            }
+            }
+
+    td = nesteddict()
     # for item in process_dict(test):
     #     print(item)
     # for item in _rec(test, list()):
     #     print(item)
-    for item in _rec(test, list()):
-        print(item)
+    # for item in _rec(test, list()):
+    #     print(item)
+    # print(dfs(test2, 'properties'))
+    print(td.keys())
+
 
 
 
