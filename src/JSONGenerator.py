@@ -33,20 +33,23 @@ logger.setLevel(logging.DEBUG)
 
 # import python_jsonschema_objects as pjs
 # TODO: Nested dicts support
-# TODO: RDF processor
 
 class JSONGenerator:
+    """Main generator class"""
     def __init__(self):
         self._template = None
         self._INPUT_SCHEMA = None
         self._OUTPUT_SCHEMA = None
-        self._PROCESSED_INPUT = None
-        self._PROCESSED_OUTPUT = None
         self._USER_DICT = None  # SynonymDict()
         self._USER_RDF = None
         logger.debug('{} created!'.format(self.__class__.__name__))
+        self.EXPERIMENTAL = False
 
     def set_template_path(self, file_path='../templates/python_service.py'):
+        """Function set template
+        :param file_path: path to service template file
+        :return: 
+        """
         template_folder_path = '/'.join(file_path.split('/')[:-1])
         template_file = file_path.split('/')[-1]
         env = Environment(loader=FileSystemLoader(template_folder_path))
@@ -54,10 +57,19 @@ class JSONGenerator:
         self._template = env.get_template(template_file)
 
     def add_dictionary(self, file_path):
+        """Add user dictionary
+        :param file_path: path to csv file 
+        :return: 
+        """
         self._USER_DICT = SynonymDict()
         self._USER_DICT.load_from_file(file_path)
 
     def load_rdf_from_file(self, file_path, format='n3'):
+        """Load user rdf file 
+        :param file_path: path to rdf file
+        :param format: optional param to set rdf format, default=n3
+        :return: 
+        """
         self._USER_RDF = RDFProcessor()
         self._USER_RDF.load_rdf_from_file(file_path, format=format)
 
@@ -65,13 +77,16 @@ class JSONGenerator:
         raise NotImplementedError('Function not implemented yet!')
 
     def load_schemas_from_file(self, input_schem, output_schem):
+        """Load files from paths
+        :param input_schem: Path to input schema file
+        :param output_schem: Path to output schema file
+        :return: 
+        """
         with open(input_schem, 'r') as inFile:
-            self._INPUT_SCHEMA = Schema()
-            self._INPUT_SCHEMA.load_schema_from_file(input_schem)
+            self._INPUT_SCHEMA = Schema(json.loads(inFile.read()), slice='properties')
             logger.debug(f'Input schema loaded from: {input_schem}')
         with open(output_schem, 'r') as outFile:
-            self._OUTPUT_SCHEMA = Schema()
-            self._OUTPUT_SCHEMA.load_schema_from_file(output_schem)
+            self._OUTPUT_SCHEMA = Schema(json.loads(outFile.read()), slice='properties')
             logger.debug(f'Output schema loaded from: {output_schem}')
 
     def load_schemas_from_url(self, input_url, output_url):
@@ -81,13 +96,25 @@ class JSONGenerator:
         except NotImplementedError as e:
             logger.warning(f'{e}')
 
-    def transform(self, target_structure, given_structure):
-        matches = []
+    def transform(self, target_structure, given_structure, *, root=None):
+        """Function used to match fields from given structure to target structure
+        :param target_structure: 
+        :param given_structure: 
+        :param root: 
+        :return: List of matched fields with transformations
+        """
+        logger.debug(f'Matching : {target_structure.keys()} to {given_structure.keys()}')
+        matches = list()
+        matched_paths = list()
         for field in target_structure.keys():
             if field in given_structure.keys():
                 logger.debug(f'Property \'{field}\' found.')
-                matches.append(self._match_types((field, target_structure.value(field)),
-                                                 (field, given_structure.value(field))))
+                if root: logger.debug(f'Property \'{field}\' found. w/ {root}')
+                match = self._match_types((field, target_structure[field]),
+                                          (field, given_structure[field]), root=root)
+                matches.append(match)
+                # matched_paths.append(match[1])
+                # logger.debug(match)
                 continue
             else:
                 logger.debug(f'Property \'{field}\' not found.')
@@ -97,44 +124,31 @@ class JSONGenerator:
                     for replacement in replacements:
                         if replacement in given_structure.keys():
                             logger.debug(f'Matching replacement found: {replacement}')
-                            matches.append(self._match_types((field, target_structure.value(field)),
-                                                             (replacement, given_structure.value(replacement))))
-                            continue
+                            matches.append(self._match_types((field, target_structure[field]),
+                                                             (replacement, given_structure[replacement]), root=root))
+                    continue
             if self._USER_RDF:
                 synonyms = self._USER_RDF.synonyms(field)
                 logger.debug(f'Known synonyms: {str(synonyms)}')
                 for synonym in synonyms:
                     if synonym in given_structure.keys():
                         logger.debug(f'Matching synonym found: {synonym}')
-                        matches.append(self._match_types((field, target_structure.value(field)),
-                                                         (synonym, given_structure.value(synonym))))
-                        continue
+                        matches.append(self._match_types((field, target_structure[field]),
+                                                         (synonym, given_structure[synonym]), root=root))
+                    continue
                 subclasses = self._USER_RDF.subclasses(field)
                 logger.debug(f'Known subclasses: {str(subclasses)}')
                 for subclass in subclasses:
                     if subclass in given_structure.keys():
                         logger.debug(f'Matching subclass found: {subclass}')
-                        matches.append(self._match_types((field, target_structure.value(field)),
-                                                         (subclass, given_structure.value(subclass))))
-                        continue
+                        matches.append(self._match_types((field, target_structure[field]),
+                                                         (subclass, given_structure[subclass]), root=root))
+                    continue
         return filter(None, matches)
 
-    # def match_transformation(self, field):
-    #     from jsonschema import validate
-    #     if field in self.INPUT_SCHEMA['properties'].keys():
-    #         logger.debug('{0} matched to {0}'. format(field))
-    #         return self.match_types(field, field)
-    #     else:
-    #         logger.debug('Property \'{}\' not found. Known synonyms: {}'.format(field,
-    #                                                                             str(self.USER_DICT.synonyms(field)[field])))
-    #         for synon in self.USER_DICT.synonyms(field)[field]:
-    #             if synon in self.INPUT_SCHEMA['properties'].keys():
-    #                 logger.debug('Matching synonym found: {}'.format(synon))
-    #                 return self.match_types(synon, field)
-
-    def _match_types(self, InputField, OutputField):
+    def _match_types(self, InputField, OutputField, *, root=None):
         """
-        Very stupid way to match fields' types
+        Very stupid way to match fields types
         """
 
         InputField, inputStructure = InputField
@@ -142,14 +156,17 @@ class JSONGenerator:
 
         type = 'type'
         if type not in inputStructure and type not in outputStructre:
-            logger.debug('Structure to Structure: {} to {}'.format(InputField, OutputField))
+            logger.debug(f'Structure to Structure: {InputField} to {OutputField}')
             if self._struct_cmp(inputStructure, outputStructre):
                 return [self._OUTPUT_SCHEMA.path(InputField),
                         self._INPUT_SCHEMA.path(OutputField),
                         transforms.simple_pass.__name__]
             else:
                 # przeszukaj rozniace sie struktury
-                # return self.transform(inputStructure, outputStructre)
+                if self.EXPERIMENTAL:
+                    logger.debug(
+                        f'Inner transformation:\n{InputField}: {inputStructure}\n{OutputField}: {outputStructre}')
+                    return list(self.transform(inputStructure, outputStructre, root=InputField))
                 return
         if type not in inputStructure and type in outputStructre:
             logger.warning('Field to Structure')
@@ -159,13 +176,13 @@ class JSONGenerator:
             return
         if inputStructure['type'] == outputStructre['type']:
             return [self._OUTPUT_SCHEMA.path(InputField),
-                    self._INPUT_SCHEMA.path(OutputField),
+                    self._INPUT_SCHEMA.path(OutputField, root=root),
                     transforms.simple_pass.__name__]
         else:
-            method = '{}2{}'.format(inputStructure['type'], outputStructre['type'])
+            method = f'{inputStructure[type]}2{outputStructre[type]}'
             try:
                 return [self._OUTPUT_SCHEMA.path(InputField),
-                        self._INPUT_SCHEMA.path(OutputField),
+                        self._INPUT_SCHEMA.path(OutputField, root=root),
                         getattr(transforms, method).__name__]
             except AttributeError:
                 raise NotImplementedError(f'{method} transformation is not implemented yet!')
@@ -178,6 +195,10 @@ class JSONGenerator:
             return False
 
     def generate_code(self):
+        """
+        Function fill loaded template
+        :return: 
+        """
         try:
             inp = self._INPUT_SCHEMA.as_dict()['title'].replace(' ', '')
             out = self._OUTPUT_SCHEMA.as_dict()['title'].replace(' ', '')
@@ -186,7 +207,7 @@ class JSONGenerator:
             return
 
         filling = list(self.transform(self._OUTPUT_SCHEMA, self._INPUT_SCHEMA))
-        # logger.debug(filling)
+        logger.debug(filling)
         imports = list(set([trans[2] for trans in filling]))
         # logger.debug(imports)
 
@@ -204,7 +225,7 @@ class JSONGenerator:
         # A gdyby porty returnowac do flaska a stamtad przekierowywac na odpowiednie uslugi?
         import random
         from subprocess import Popen, CREATE_NEW_CONSOLE
-        new_file = 'service_' + str(random.randint(100, 666)) + '.py'
+        new_file = f'service_{str(random.randint(100, 666))}.py'
         with open(new_file, 'w') as service_file:
             service_file.write(self.generate_code())
         Popen(['python', new_file], creationflags=CREATE_NEW_CONSOLE)
@@ -224,23 +245,15 @@ if __name__ == '__main__':
     gen = JSONGenerator()
     gen.set_template_path()
     # gen.add_dictionary('../utils/rgb.csv')
-    gen.load_rdf_from_file('../utils/colors.rdf')
+    gen.load_rdf_from_file('../rdf/colors.rdf')
     # gen.RDF_synonym()
-    gen.load_schemas_from_file('../schema/rgb', '../schema/rgb2')
-    print('INPUT:')
-    for x in gen._PROCESSED_INPUT:
-        print(x[:2], '/'.join(x[2]), '\n')
-        # gen.RDF_synonym('Test2')
+    gen.load_schemas_from_file('../schema/air_temperature', '../schema/temperature')
+    print(gen.generate_code())
 
-    print('OUTPUT:')
-    for x in gen._PROCESSED_OUTPUT:
-        print(x[:2], '/'.join(x[2]), '\n')
+    # print(gen.find_path('deg', gen._PROCESSED_INPUT)[2])
+    # print(gen.RDF_synonym('Red'))
+    #
+    # print(gen.RDF_subclass('Green'))
 
-
-        # print(gen.find_path('deg', gen._PROCESSED_INPUT)[2])
-        # print(gen.RDF_synonym('Red'))
-        #
-        # print(gen.RDF_subclass('Green'))
-
-        # print(gen.generate_code())
-        # gen.run_service()
+    # print(gen.generate_code())
+    # gen.run_service()

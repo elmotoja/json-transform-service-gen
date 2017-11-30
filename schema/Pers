@@ -2,13 +2,12 @@
      "title": "Person Schema",
      "type": "object",
      "properties": {
-        "Someone":{
+        "Person": {
          "firstName": {
              "type": "string"
          },
         "lastName": {
              "type": "string"
-         }
          },
          "address": {
              "type": "object",
@@ -23,6 +22,6 @@
              "type": "string",
              "enum": ["male", "female"]
          }
-              },
+              }},
      "required": ["firstName", "lastName"]
 }

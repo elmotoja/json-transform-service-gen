@@ -2,8 +2,8 @@
     "title": "Type Test2",
     "type": "object",
     "properties": {
-        "SomethingDifferent": {
-            "Thing": {
+        "temperature": {
+            "value": {
                 "type": "string"
                     }
     }

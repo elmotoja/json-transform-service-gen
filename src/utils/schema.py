@@ -1,20 +1,30 @@
 import json
 # from ..process_dict import process_dict
 from dictquery import DictQuery as dq
+from operator import itemgetter
 
 
 class Schema:
-    def __init__(self):
-        self._SCHEMA = None
-        self._PROCESSED = None
+    def __init__(self, dictionary, slice=None):
+        self._SCHEMA = dictionary
+        if slice:
+            self._PROCESSED = self._process(self._SCHEMA[slice])
+        else:
+            self._PROCESSED = self._process(self._SCHEMA)
 
     def __str__(self):
         return str(self._SCHEMA)
 
-    def load_schema_from_file(self, path_to_schema):
-        with open(path_to_schema, 'r') as inFile:
-            self._SCHEMA = json.loads(inFile.read())
-            self._PROCESSED = self._process(self._SCHEMA['properties'])
+    def __getitem__(self, item):
+        for record in self._PROCESSED:
+            if record[0] == item:
+                return record[1]
+        raise KeyError(f'{item}')
+
+    # def _load_schema_from_file(self, path_to_schema):
+    #     with open(path_to_schema, 'r') as inFile:
+    #         self._SCHEMA = json.loads(inFile.read())
+    #         self._PROCESSED = self._process(self._SCHEMA['properties'])
 
     def load_schemas_from_url(self, input_url, output_url):
         raise NotImplementedError('Function not implemented yet!')
@@ -27,8 +37,11 @@ class Schema:
             if item[0] == key:
                 return item[1]
 
-    def path(self, key) -> list:
-        for item in self._PROCESSED:
+    def path(self, key, *, root=None) -> list:
+        paths = self._PROCESSED
+        if root:
+            paths = [path for path in self._PROCESSED if root in path[2]]
+        for item in paths:
             if item[0] == key:
                 return item[2]
 
@@ -38,7 +51,8 @@ class Schema:
     def _process(self, dictionary):
         pre_processed = list()
         for item in self._process_dict(dictionary):
-            if item[0] in ('type', 'minimum', 'maximum', 'title', 'id', 'description', 'examples', 'default'):
+            if item[0] in ('type', 'minimum', 'maximum', 'title', 'id',
+                           'description', 'examples', 'default', 'enum', 'required'):
                 continue
             else:
                 pre_processed.append(item)
@@ -51,7 +65,7 @@ class Schema:
             else:
                 # remove record from list
                 continue
-        return processed
+        return sorted(processed, key=lambda t: len(t[2]))
 
     def _process_dict(self, d):
         for key, value in self._rec(d):
@@ -84,9 +98,14 @@ class Schema:
                     yield new_path
 
 if __name__ == "__main__":
-    schema = Schema()
-    schema.load_schema_from_file('../../schema/rgb')
+    with open('../../schema/air_temperature', 'r') as inFile:
+        schema = Schema(json.loads(inFile.read()), 'properties')
+
     # print(schema)
     # print(schema.keys())
-    print(schema._PROCESSED)
+    # print(schema._PROCESSED)
+    # for t in schema._PROCESSED:
+    #     print(t[2])
+    print(schema.path('value', root='wind'))
+    # print(schema.as_dict()['test'])
 

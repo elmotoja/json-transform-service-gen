@@ -2,8 +2,8 @@
     "title": "Type Test",
     "type": "object",
     "properties": {
-        "Something": {
-            "Thing": {
+        "wind": {
+            "value": {
                 "type": "integer"
                     }
     }

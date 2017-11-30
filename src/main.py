@@ -5,7 +5,7 @@ import logging
 
 console = logging.StreamHandler()
 # console.setLevel(logging.WARNING)
-formatter = logging.Formatter('%(name)-14s: %(levelname)-8s %(message)s')
+formatter = logging.Formatter('%(name)-14s: %(funcName)-22s: %(message)s')
 console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
@@ -20,7 +20,7 @@ def main(argv):
     gen = config_default()
 
     try:
-        opts, args = getopt.getopt(argv, "hi:o:d:f:t:pr", ["ifile=", "ofile=", "--dictionary=",
+        opts, args = getopt.getopt(argv, "hei:o:d:f:t:pr", ["ifile=", "ofile=", "--dictionary=",
                                                            "--template=", "--print", "--run", "--rdf="])
     except getopt.GetoptError as err:
         print(err.message)
@@ -29,6 +29,8 @@ def main(argv):
         if opt == '-h':
             print('test.py -i <inputfile> -o <outputfile>')
             sys.exit()
+        elif opt == '-e':
+            gen.EXPERIMENTAL = True
         elif opt in ("-i", "--ifile"):
             inputfile = arg
         elif opt in ("-o", "--ofile"):
