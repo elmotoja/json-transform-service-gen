@@ -1,0 +1,424 @@
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:219           :      RDF_synonym(): ['http://www.synoms.org/Test2', 'Test2', 'Proba2', 'Tescik2']
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:219           :      RDF_synonym(): ['http://www.synoms.org/Test2', 'Proba2', 'Tescik2', 'Test2']
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:219           :      RDF_synonym(): ['http://www.synoms.org/Test2', 'Test2', 'Proba2', 'Tescik2']
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:53            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:63            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:53            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:63            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:53            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:63            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:53            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:63            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:50            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:60            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/synoms.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/temperature.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['zielony', 'green']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:88            :        transform(): Property 'czerwony' not found.
+Generator:98            :        transform(): Known synonyms: ['czerwony', 'red']
+Generator:106           :        transform(): Known subclasses: []
+Generator:194           :    generate_code(): Code generated!
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['green', 'zielony']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:88            :        transform(): Property 'czerwony' not found.
+Generator:98            :        transform(): Known synonyms: ['czerwony', 'red']
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['zielony', 'green']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:88            :        transform(): Property 'czerwony' not found.
+Generator:98            :        transform(): Known synonyms: ['czerwony', 'red']
+Generator:106           :        transform(): Known subclasses: []
+Generator:194           :    generate_code(): Code generated!
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['zielony', 'green']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:88            :        transform(): Property 'czerwony' not found.
+Generator:98            :        transform(): Known synonyms: ['red', 'czerwony']
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['green', 'zielony']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:108           :        transform(): []
+Generator:88            :        transform(): Property 'czerwony' not found.
+Generator:98            :        transform(): Known synonyms: ['czerwony', 'red']
+Generator:106           :        transform(): Known subclasses: []
+Generator:195           :    generate_code(): Code generated!
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['green', 'zielony']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:108           :        transform(): []
+Generator:88            :        transform(): Property 'czerwony' not found.
+Generator:98            :        transform(): Known synonyms: ['red', 'czerwony']
+Generator:106           :        transform(): Known subclasses: []
+Generator:195           :    generate_code(): Code generated!
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['green', 'zielony']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['zielony', 'green']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:108           :        transform(): kermitowy('kermitowy', dict_keys(['red', 'kermitowy', 'blue']))
+Generator:88            :        transform(): Property 'czerwony' not found.
+Generator:98            :        transform(): Known synonyms: ['red', 'czerwony']
+Generator:106           :        transform(): Known subclasses: []
+Generator:195           :    generate_code(): Code generated!
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['zielony', 'green']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:108           :        transform(): kermitowy('kermitowy', dict_keys(['red', 'kermitowy', 'blue']))
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['green', 'zielony']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:108           :        transform(): kermitowy('kermitowy', dict_keys(['red', 'kermitowy', 'blue']))
+Generator:110           :        transform(): Matching subclass found: kermitowy
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:83            :        transform(): Property 'blue' found.
+Generator:88            :        transform(): Property 'green' not found.
+Generator:98            :        transform(): Known synonyms: ['green', 'zielony']
+Generator:106           :        transform(): Known subclasses: ['kermitowy']
+Generator:108           :        transform(): kermitowy('kermitowy', dict_keys(['red', 'kermitowy', 'blue']))
+Generator:110           :        transform(): Matching subclass found: kermitowy
+Generator:152           :     _match_types(): Structure to Field
+Generator:88            :        transform(): Property 'czerwony' not found.
+Generator:98            :        transform(): Known synonyms: ['czerwony', 'red']
+Generator:101           :        transform(): Matching synonym found: red
+Generator:106           :        transform(): Known subclasses: []
+Generator:195           :    generate_code(): Code generated!
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:61            : load_rdf_from_file(): RDF loaded from path: ../utils/colors.rdf
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:69            : load_schemas_from_file(): Input schema loaded from: ../schema/verynested2
+Generator:73            : load_schemas_from_file(): Output schema loaded from: ../schema/verynested
+Generator:86            :        transform(): Property 'rgb' found.
+Generator:143           :     _match_types(): Structure to Structure: rgb to rgb
+Generator:177           :      _struct_cmp(): Differences in structures
+Generator:91            :        transform(): Property 'xxx' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:151           :     _match_types(): <filter object at 0x043EF330>
+Generator:91            :        transform(): Property 'xxx' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:91            :        transform(): Property 'aaa' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:91            :        transform(): Property 'qqq' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:86            :        transform(): Property 'ccc' found.
+Generator:143           :     _match_types(): Structure to Structure: ccc to ccc
+Generator:86            :        transform(): Property 'ddd' found.
+Generator:143           :     _match_types(): Structure to Structure: ddd to ddd
+Generator:86            :        transform(): Property 'Blue' found.
+Generator:189           :    generate_code(): [<filter object at 0x043EF330>, [['rgb', 'xxx', 'aaa', 'qqq', 'ccc'], ['rgb', 'zzz', 'yyy', 'kkk', 'ccc'], 'simple_pass'], [['rgb', 'xxx', 'aaa', 'qqq', 'ccc', 'ddd'], ['rgb', 'zzz', 'yyy', 'kkk', 'ccc', 'ddd'], 'simple_pass'], [['rgb', 'xxx', 'aaa', 'qqq', 'ccc', 'ddd', 'Blue'], ['rgb', 'zzz', 'yyy', 'kkk', 'ccc', 'ddd', 'Blue'], 'simple_pass']]
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:69            : load_schemas_from_file(): Input schema loaded from: ../schema/verynested2
+Generator:73            : load_schemas_from_file(): Output schema loaded from: ../schema/verynested
+Generator:86            :        transform(): Property 'rgb' found.
+Generator:143           :     _match_types(): Structure to Structure: rgb to rgb
+Generator:177           :      _struct_cmp(): Differences in structures
+Generator:91            :        transform(): Property 'xxx' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:151           :     _match_types(): <filter object at 0x03E3F330>
+Generator:91            :        transform(): Property 'xxx' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:91            :        transform(): Property 'aaa' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:91            :        transform(): Property 'qqq' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:86            :        transform(): Property 'ccc' found.
+Generator:143           :     _match_types(): Structure to Structure: ccc to ccc
+Generator:86            :        transform(): Property 'ddd' found.
+Generator:143           :     _match_types(): Structure to Structure: ddd to ddd
+Generator:86            :        transform(): Property 'Blue' found.
+Generator:189           :    generate_code(): [<filter object at 0x03E3F330>, [['rgb', 'xxx', 'aaa', 'qqq', 'ccc'], ['rgb', 'zzz', 'yyy', 'kkk', 'ccc'], 'simple_pass'], [['rgb', 'xxx', 'aaa', 'qqq', 'ccc', 'ddd'], ['rgb', 'zzz', 'yyy', 'kkk', 'ccc', 'ddd'], 'simple_pass'], [['rgb', 'xxx', 'aaa', 'qqq', 'ccc', 'ddd', 'Blue'], ['rgb', 'zzz', 'yyy', 'kkk', 'ccc', 'ddd', 'Blue'], 'simple_pass']]
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:69            : load_schemas_from_file(): Input schema loaded from: ../schema/verynested2
+Generator:73            : load_schemas_from_file(): Output schema loaded from: ../schema/verynested
+Generator:86            :        transform(): Property 'rgb' found.
+Generator:143           :     _match_types(): Structure to Structure: rgb to rgb
+Generator:177           :      _struct_cmp(): Differences in structures
+Generator:91            :        transform(): Property 'xxx' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:69            : load_schemas_from_file(): Input schema loaded from: ../schema/verynested2
+Generator:73            : load_schemas_from_file(): Output schema loaded from: ../schema/verynested
+Generator:86            :        transform(): Property 'rgb' found.
+Generator:143           :     _match_types(): Structure to Structure: rgb to rgb
+Generator:177           :      _struct_cmp(): Differences in structures
+Generator:91            :        transform(): Property 'xxx' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:69            : load_schemas_from_file(): Input schema loaded from: ../schema/verynested2
+Generator:73            : load_schemas_from_file(): Output schema loaded from: ../schema/verynested
+Generator:86            :        transform(): Property 'rgb' found.
+Generator:143           :     _match_types(): Structure to Structure: rgb to rgb
+Generator:177           :      _struct_cmp(): Differences in structures
+Generator:91            :        transform(): Property 'xxx' not found.
+Generator:103           :        transform(): Known synonyms: []
+Generator:111           :        transform(): Known subclasses: []
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:69            : load_schemas_from_file(): Input schema loaded from: ../schema/air_temperature
+Generator:73            : load_schemas_from_file(): Output schema loaded from: ../schema/temperature
+Generator:83            :        transform(): Matching : ['wind', 'value', 'deg'] to ['station', 'measurements', 'software_version', 'localization', 'air_temperature', 'humidity', 'wind', 'datestamp', 'lat', 'long', 'value', 'unit', 'value', 'deg']
+Generator:87            :        transform(): Property 'wind' found.
+Generator:144           :     _match_types(): Structure to Structure: wind to wind
+Generator:177           :      _struct_cmp(): Differences in structures
+Generator:151           :     _match_types(): Inner transformation:
+wind: {'value': {'type': 'integer'}, 'deg': {'type': 'string'}}
+wind: {'value': {'type': 'number'}, 'deg': {'type': 'number'}}
+Generator:83            :        transform(): Matching : dict_keys(['value', 'deg']) to dict_keys(['value', 'deg'])
+Generator:87            :        transform(): Property 'value' found.
+Generator:87            :        transform(): Property 'deg' found.
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:69            : load_schemas_from_file(): Input schema loaded from: ../schema/air_temperature
+Generator:73            : load_schemas_from_file(): Output schema loaded from: ../schema/temperature
+Generator:83            :        transform(): Matching : ['wind', 'value', 'deg'] to ['station', 'measurements', 'software_version', 'localization', 'air_temperature', 'humidity', 'wind', 'datestamp', 'lat', 'long', 'value', 'unit', 'value', 'deg']
+Generator:87            :        transform(): Property 'wind' found.
+Generator:144           :     _match_types(): Structure to Structure: wind to wind
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:68            : load_schemas_from_file(): Input schema loaded from: ../schema/air_temperature
+Generator:71            : load_schemas_from_file(): Output schema loaded from: ../schema/temperature
+Generator:81            :        transform(): Matching : ['wind', 'value', 'deg'] to ['station', 'measurements', 'software_version', 'localization', 'air_temperature', 'humidity', 'wind', 'datestamp', 'lat', 'long', 'value', 'unit', 'value', 'deg']
+Generator:86            :        transform(): Property 'wind' found.
+Generator:134           :     _match_types(): Structure to Structure: wind to wind
+Generator:169           :      _struct_cmp(): Differences in structures
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:68            : load_schemas_from_file(): Input schema loaded from: ../schema/air_temperature
+Generator:71            : load_schemas_from_file(): Output schema loaded from: ../schema/temperature
+Generator:81            :        transform(): Matching : ['wind', 'value', 'deg'] to ['station', 'measurements', 'software_version', 'localization', 'air_temperature', 'humidity', 'wind', 'datestamp', 'lat', 'long', 'value', 'unit', 'value', 'deg']
+Generator:86            :        transform(): Property 'wind' found.
+Generator:134           :     _match_types(): Structure to Structure: wind to wind
+Generator:169           :      _struct_cmp(): Differences in structures
+Generator:86            :        transform(): Property 'value' found.
+Generator:86            :        transform(): Property 'deg' found.
+Generator:181           :    generate_code(): [[['wind', 'value'], ['measurements', 'air_temperature', 'value'], 'simple_pass'], [['wind', 'deg'], ['measurements', 'wind', 'deg'], 'string2number']]
+Generator:190           :    generate_code(): Code generated!
+
+
+Generator:44            :         __init__(): JSONGenerator created!
+Generator:51            : set_template_path(): Template loaded from path: ../templates/python_service.py
+RDF processor:11            :         __init__(): RDFProcessor created!
+RDF processor:16            : load_rdf_from_file(): RDF loaded from path: ../rdf/colors.rdf
+Generator:68            : load_schemas_from_file(): Input schema loaded from: ../schema/air_temperature
+Generator:71            : load_schemas_from_file(): Output schema loaded from: ../schema/temperature
+Generator:81            :        transform(): Matching : ['wind', 'value', 'deg'] to ['station', 'measurements', 'software_version', 'localization', 'air_temperature', 'humidity', 'wind', 'datestamp', 'lat', 'long', 'value', 'unit', 'value', 'deg']
+Generator:86            :        transform(): Property 'wind' found.
+Generator:134           :     _match_types(): Structure to Structure: wind to wind
+Generator:169           :      _struct_cmp(): Differences in structures
+Generator:86            :        transform(): Property 'value' found.
+Generator:86            :        transform(): Property 'deg' found.
+Generator:181           :    generate_code(): [[['wind', 'value'], ['measurements', 'air_temperature', 'value'], 'simple_pass'], [['wind', 'deg'], ['measurements', 'wind', 'deg'], 'string2number']]
+Generator:190           :    generate_code(): Code generated!
+
+

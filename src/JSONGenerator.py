@@ -46,7 +46,7 @@ class JSONGenerator:
         self.EXPERIMENTAL = False
 
     def set_template_path(self, file_path='../templates/python_service.py'):
-        """Function set template
+        """Use this function to set template path
         :param file_path: path to service template file
         :return: 
         """
@@ -57,7 +57,7 @@ class JSONGenerator:
         self._template = env.get_template(template_file)
 
     def add_dictionary(self, file_path):
-        """Add user dictionary
+        """Use this function to add user dictionary
         :param file_path: path to csv file 
         :return: 
         """
@@ -65,7 +65,7 @@ class JSONGenerator:
         self._USER_DICT.load_from_file(file_path)
 
     def load_rdf_from_file(self, file_path, format='n3'):
-        """Load user rdf file 
+        """Use this function to load user rdf file 
         :param file_path: path to rdf file
         :param format: optional param to set rdf format, default=n3
         :return: 
@@ -77,7 +77,7 @@ class JSONGenerator:
         raise NotImplementedError('Function not implemented yet!')
 
     def load_schemas_from_file(self, input_schem, output_schem):
-        """Load files from paths
+        """Use this function to load schema files from paths
         :param input_schem: Path to input schema file
         :param output_schem: Path to output schema file
         :return: 
@@ -90,6 +90,12 @@ class JSONGenerator:
             logger.debug(f'Output schema loaded from: {output_schem}')
 
     def load_schemas_from_url(self, input_url, output_url):
+        """
+        Use this function to load schemas from web
+        :param input_url: Input schema URL
+        :param output_url: Output schema URL
+        :raise NotImplementedError:
+        """
         try:
             self._INPUT_SCHEMA.load_schema_from_url(input_url)
             self._OUTPUT_SCHEMA.load_schema_from_url(output_url)
@@ -101,7 +107,7 @@ class JSONGenerator:
         :param target_structure: 
         :param given_structure: 
         :param root: 
-        :return: List of matched fields with transformations
+        :return: List of matched fields with transformationsqui
         """
         logger.debug(f'Matching : {target_structure.keys()} to {given_structure.keys()}')
         matches = list()
@@ -188,6 +194,13 @@ class JSONGenerator:
                 raise NotImplementedError(f'{method} transformation is not implemented yet!')
 
     def _struct_cmp(self, struct1, struct2):
+        """
+        Helper function to compare dicts
+        :param struct1: Dict1
+        :param struct2: Dict2
+        :return: True, if Dict1 == Dict2, False if not
+        :rtype: Boolean
+        """
         if struct1 == struct2:
             return True
         else:
@@ -198,6 +211,7 @@ class JSONGenerator:
         """
         Function fill loaded template
         :return: 
+        :raise: Exception
         """
         try:
             inp = self._INPUT_SCHEMA.as_dict()['title'].replace(' ', '')
@@ -222,6 +236,10 @@ class JSONGenerator:
                 logger.warning('Template must be set before generating service')
 
     def run_service(self):
+        """
+        Experimental function that generate code and run service
+        :return: 
+        """
         # A gdyby porty returnowac do flaska a stamtad przekierowywac na odpowiednie uslugi?
         import random
         from subprocess import Popen, CREATE_NEW_CONSOLE
