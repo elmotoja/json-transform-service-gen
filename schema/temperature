@@ -1,0 +1,10 @@
+{
+    "title": "Temperature",
+    "type": "object",
+    "properties": {
+        "wind":{
+            "value": {"type": "integer"},
+            "deg": {"type":"string"}
+        }
+            }
+}

@@ -1,0 +1,4 @@
+{
+  "TransformTest.py::TransformTest::test_type_transformation_method_finder": true, 
+  "TypeCheckTest.py::TypeCheckTest::test_StructureToStructure": true
+}

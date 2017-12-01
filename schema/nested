@@ -1,0 +1,11 @@
+{
+    "title": "Nested Schema",
+    "type": "object",
+    "properties": {
+        "colors":{
+            "Red": {
+                "type": "string"
+                }
+            }
+        }
+}

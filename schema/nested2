@@ -1,0 +1,9 @@
+{
+    "title": "Nested Schema",
+    "type": "object",
+    "properties": {
+            "Red": {
+                "type": "integer"
+                }
+        }
+}

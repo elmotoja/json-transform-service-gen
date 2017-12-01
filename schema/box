@@ -1,0 +1,14 @@
+{
+    "title": "Box",
+    "type": "object",
+    "properties": {
+        "cost": {
+            "value": {
+                "type": "integer"
+            },
+            "currency": {
+                "type": "string"}
+    },
+    "something": {"type": "string"}
+}
+}

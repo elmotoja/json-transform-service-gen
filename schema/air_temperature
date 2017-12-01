@@ -1,0 +1,26 @@
+{
+    "title": "Weather Station",
+    "type": "object",
+    "properties": {
+        "station":{
+            "id":{"type": "integer"},
+            "software_version":{"type": "string"},
+            "localization":{
+                "lat": {"type": "number"},
+                "long": {"type": "number"}
+            }
+        },
+        "measurements": {
+            "air_temperature":{
+                "value": {"type": "integer"},
+                "unit": {"type": "string"}
+            },
+            "humidity":{"type": "integer"},
+            "wind":{
+                "value": {"type": "number"},
+                "deg": {"type": "number"}
+            },
+        "datestamp":{"type": "string"}
+
+}
+}}
