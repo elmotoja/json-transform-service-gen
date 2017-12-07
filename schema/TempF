@@ -1,0 +1,8 @@
+{
+    "title": "Temperature",
+    "type": "object",
+    "properties": {
+        "TempF":{ "type": "integer"}
+        }
+}
+
