@@ -1,0 +1,24 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix my: <http://my.com/> .
+@prefix uni: <http://unit.com/> .
+@prefix val: <http://val.com/> .
+
+my:MainClass rdf:type owl:Class .
+my:MainClass rdfs:label "Main Class" .
+my:MainClass val:value my:Value .
+my:MainClass uni:unit my:Unit .
+
+my:Value rdf:type owl:Class .
+my:Value rdfs:label "Value!" .
+
+my:Unit rdf:type owl:Class .
+my:Unit rdfs:label "Unit!" .
+
+my:ChildClass rdf:type owl:Class .
+my:ChildClass rdf:subClassOf my:MainClass .
+my:ChildClass rdfs:label "ChildClass" .
+
+
+

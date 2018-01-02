@@ -2,8 +2,18 @@
     "title": "Nested Schema",
     "type": "object",
     "properties": {
-            "Red": {
-                "type": "integer"
+        "this":{
+            "is": {
+                "nested":{
+                    "example": {
+                        "and": {
+                            "this": {
+                                "valueWeLookFor" : {"type": "string"}
+                            }
+                        }
+                        }
                 }
+                }
+            }
         }
 }

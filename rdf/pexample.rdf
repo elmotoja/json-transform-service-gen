@@ -1,0 +1,188 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:	<http://www.w3.org/2002/07/owl#> .
+@prefix tmp: <http://www.temperature.org/> .
+@prefix trans: <http://www.example.com/> .
+@prefix are: <http://www.area.com/> .
+@prefix freq: <http://www.freqency.com/> .
+@prefix cur: <http://www.currency.com/> .
+
+
+tmp:Temperature rdf:type owl:Class .
+tmp:Temperature rdfs:label "Temperature" .
+
+tmp:Air_temperature rdf:type owl:Class .
+tmp:Air_temperature rdfs:label "Air_temperature" .
+tmp:Air_temperature rdfs:label "Air_temp" .
+tmp:Air_temperature rdfs:subClassOf tmp:Temperature .
+
+tmp:TempC rdf:type owl:Class .
+tmp:TempC rdfs:subClassOf tmp:Temperature .
+tmp:TempC rdfs:label "TempC" .
+tmp:TempC trans:CtoK tmp:TempK .
+tmp:TempC trans:CtoF tmp:TempF .
+
+tmp:TempK rdf:type owl:Class .
+tmp:TempK rdfs:subClassOf tmp:Temperature .
+tmp:TempK rdfs:label "TempK" .
+tmp:TempK trans:KtoC tmp:TempC .
+tmp:TempK trans:KtoF tmp:TempF .
+
+tmp:TempF rdf:type owl:Class .
+tmp:TempF rdfs:subClassOf tmp:Temperature .
+tmp:TempF rdfs:label "TempF" .
+tmp:TempF trans:FtoC tmp:TempC .
+tmp:TempF trans:FtoK tmp:TempK .
+
+are:AreaKM2 rdf:type owl:Class .
+are:AreaKM2 rdfs:label "AreaKM2" .
+are:AreaKM2 trans:KM2toM2 are:AreaM2 .
+are:AreaKM2 trans:KM2toMILE2 are:AreaMILE2 .
+are:AreaKM2 trans:KM2toHECTAR are:AreaHECTAR .
+
+are:AreaMILE2 rdf:type owl:Class .
+are:AreaMILE2 rdfs:label "AreaMILE2" .
+are:AreaMILE2 trans:MILE2toKM2 are:AreaKM2 .
+are:AreaMILE2 trans:MILE2toM2 are:AreaM2 .
+are:AreaMILE2 trans:MILE2toHECTAR are:AreaHECTAR .
+
+are:AreaM2 rdf:type owl:Class .
+are:AreaM2 rdfs:label "AreaM2" .
+are:AreaM2 trans:M2toKM2 are:AreaKM2 .
+are:AreaM2 trans:M2toMILE are:AreaMILE .
+are:AreaM2 trans:M2toHECTAR are:AreaHECTAR .
+
+are:AreaHECTAR rdf:type owl:Class .
+are:AreaHECTAR rdfs:label "AreaHECTAR" .
+are:AreaHECTAR trans:HECTARtoKM2 are:AreaKM2 .
+are:AreaHECTAR trans:HECTARtoMILE are:AreaMILE .
+are:AreaHECTAR trans:HECTARtoM2 are:AreaM2 .
+
+#freq:Frequency rdf:type owl:Class .
+#freq:Frequency rdfs:label "Frequency" .
+#freq:Frequency trans:gigaherzto_herz freq:Frequency_herz .
+#freq:Frequency trans:gigaherzto_kgherz freq:Frequency_kgherz .
+#freq:Frequency trans:gigaherzto_megaherz freq:Frequency_megaherz .
+
+cur:EUR rdf:type owl:Class .
+cur:EUR rdfs:label "EUR" .
+cur:EUR trans:EURtoUSD cur:USD .
+cur:EUR trans:EURtoPLN cur:PLN .
+cur:EUR trans:EURtoCHF cur:CHF .
+
+cur:PLN rdf:type owl:Class .
+cur:PLN rdfs:label "PLN" .
+cur:PLN trans:PLNtoUSD cur:USD .
+cur:PLN trans:PLNtoPLN cur:EUR .
+cur:PLN trans:PLNtoCHF cur:CHF .
+
+cur:USD rdf:type owl:Class .
+cur:USD rdfs:label "USD" .
+cur:USD trans:USDtoEUR cur:EUR .
+cur:USD trans:USDtoPLN cur:PLN .
+cur:USD trans:USDtoCHF cur:CHF .
+
+cur:CHF rdf:type owl:Class .
+cur:CHF rdfs:label "CHF" .
+cur:CHF trans:CHFtoEUR cur:EUR .
+cur:CHF trans:CHFtoPLN cur:PLN .
+cur:CHF trans:CHFtoUSD cur:USD .
+
+
+
+#-----------TRANSFORMS-----------------------------------
+#
+trans:EURtoUSD rdf:type owl:Class .
+trans:EURtoUSD rdfs:label "EURtoUSD" .
+
+trans:USDtoEUR rdf:type owl:Class .
+trans:USDtoEUR rdfs:label "USDtoEUR" .
+
+trans:EURtoPLN rdf:type owl:Class .
+trans:EURtoPLN rdfs:label "EURtoPLN" .
+
+trans:PLNtoEUR rdf:type owl:Class .
+trans:PLNtoEUR rdfs:label "PLNtoEUR" .
+
+trans:EURtoCHF rdf:type owl:Class .
+trans:EURtoCHF rdfs:label "EURtoCHF" .
+
+trans:CHFtoEUR rdf:type owl:Class .
+trans:CHFtoEUR rdfs:label "CHFtoEUR" .
+
+trans:CHFtoPLN rdf:type owl:Class .
+trans:CHFtoPLN rdfs:label "CHFtoPLN" .
+
+trans:CHFtoUSD rdf:type owl:Class .
+trans:CHFtoUSD rdfs:label "CHFtoUSD" .
+
+trans:PLNtoUSD rdf:type owl:Class .
+trans:PLNtoUSD rdfs:label "PLNtoUSD" .
+
+trans:PLNtoCHF rdf:type owl:Class .
+trans:PLNtoCHF rdfs:label "PLNtoCHF" .
+
+trans:USDtoPLN rdf:type owl:Class .
+trans:USDtoPLN rdfs:label "USDtoPLN" .
+
+trans:USDtoCHF rdf:type owl:Class .
+trans:USDtoCHF rdfs:label "USDtoCHF" .
+
+
+
+#Area
+trans:KMtoM2 rdf:type owl:Class .
+trans:KMtoM2 rdfs:label"KM2toM2" .
+
+trans:M2toKM2 rdf:type owl:Class .
+trans:M2toKM2 rdfs:label "M2toKM2" .
+
+trans:KM2toMILE2 rdf:type owl:Class .
+trans:KM2toMILE2 rdfs:label "KM2toMIlE2" .
+
+trans:MILEtoKM2 rdf:type owl:Class .
+trans:MILEtoKM2 rdfs:label "MILEtoKM2" .
+
+trans:KM2toHECTAR rdf:type owl:Class .
+trans:KM2toHECTAR rdfs:label "KM2toHECTAR" .
+
+trans:HECTARtoKM2 rdf:type owl:Class .
+trans:HECTARtoKM2 rdfs:label "HECTARtoKM2" .
+
+trans:MILEtoHECTAR rdf:type owl:Class .
+trans:MILEtoHECTAR rdfs:label "MILEtoHECTAR" .
+
+trans:HECTRtoMILE rdf:type owl:Class .
+trans:HECTRtoMILE rdfs:label "HECTRtoMILE" .
+
+trans:HECTARtoM2 rdf:type owl:Class .
+trans:HECTARtoM2 rdfs:label "HECTARtoM2" .
+
+trans:M2toMILE rdf:type owl:Class .
+trans:M2toMILE rdfs:label "M2toMILE" .
+
+trans:MILEtoM2 rdf:type owl:Class .
+trans:MILEtoM2 rdfs:label "MILEtoM2" .
+
+trans:M2toHECTAR rdf:type owl:Class .
+trans:M2toHECTAR rdfs:label "M2toHECTAR" .
+
+
+#Temp
+trans:CtoK rdf:type owl:Class .
+trans:CtoK rdfs:label "CtoK" .
+
+trans:CtoF rdf:type owl:Class .
+trans:CtoF rdfs:label "CtoF" .
+
+trans:KtoC rdf:type owl:Class .
+trans:KtoC rdfs:label "KtoC" .
+
+trans:KtoF rdf:type owl:Class .
+trans:KtoF rdfs:label "KtoF" .
+
+trans:FtoC rdf:type owl:Class .
+trans:FtoC rdfs:label "FtoC" .
+
+trans:FtoK rdf:type owl:Class .
+trans:FtoK rdfs:label "FtoK" .

@@ -2,10 +2,7 @@
     "title": "Type Test2",
     "type": "object",
     "properties": {
-        "temperature": {
-            "value": {
-                "type": "string"
-                    }
+        "temperature": { "type": "integer" }
     }
 }
 }

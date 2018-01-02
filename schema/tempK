@@ -2,7 +2,7 @@
     "title": "Temperature",
     "type": "object",
     "properties": {
-        "TempC":{ "type": "integer"}
+            "TempK":{ "type": "integer"}
         }
 }
 

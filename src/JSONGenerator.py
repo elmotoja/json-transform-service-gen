@@ -32,10 +32,14 @@ logger.setLevel(logging.DEBUG)
 
 
 # import python_jsonschema_objects as pjs
-# TODO: Nested dicts support
+# TODO: Nested dicts support (full)
+# TODO: create none keys in result dict
+# TODO: handle unspecified 'temperature' unit
+# petle
 
 class JSONGenerator:
     """Main generator class"""
+
     def __init__(self):
         self._template = None
         self._INPUT_SCHEMA = None
@@ -91,6 +95,7 @@ class JSONGenerator:
 
     def load_schemas_from_url(self, input_url, output_url):
         """
+        FUTURE!
         Use this function to load schemas from web
         :param input_url: Input schema URL
         :param output_url: Output schema URL
@@ -102,54 +107,103 @@ class JSONGenerator:
         except NotImplementedError as e:
             logger.warning(f'{e}')
 
+    def get_template_ext(self):
+        """Use this function to get loaded template extension
+        :rtype: string 
+        """
+        return self._template.__dict__['name'].split('.')[-1]
+
     def transform(self, target_structure, given_structure, *, root=None):
         """Function used to match fields from given structure to target structure
         :param target_structure: 
         :param given_structure: 
         :param root: 
-        :return: List of matched fields with transformationsqui
+        :return: List of matched fields with transformations
         """
         logger.debug(f'Matching : {target_structure.keys()} to {given_structure.keys()}')
+        target_keys_left = target_structure.keys()
+        logger.debug(f"Target keys: {target_keys_left}")
+        given_keys_left = given_structure.keys()
+        logger.debug(f"Given keys: {given_keys_left}")
         matches = list()
-        matched_paths = list()
-        for field in target_structure.keys():
-            if field in given_structure.keys():
-                logger.debug(f'Property \'{field}\' found.')
-                if root: logger.debug(f'Property \'{field}\' found. w/ {root}')
-                match = self._match_types((field, target_structure[field]),
-                                          (field, given_structure[field]), root=root)
-                matches.append(match)
-                # matched_paths.append(match[1])
-                # logger.debug(match)
-                continue
-            else:
-                logger.debug(f'Property \'{field}\' not found.')
-                if self._USER_DICT:
+        try:
+            # exact match
+            for field in target_keys_left[:]:
+                logger.debug(f'Matching : {field}')
+                if field in given_keys_left[:]:
+                    logger.debug(f'Property \'{field}\' found.')
+                    if root: logger.debug(f'Property \'{field}\' found. w/ {root}')
+                    match = self._match_types((field, target_structure[field]),
+                                              (field, given_structure[field]), root=root)
+                    logger.debug(f"Before: {target_keys_left}")
+                    target_keys_left.remove(field)
+                    logger.debug(f"Before: {target_keys_left}")
+                    given_keys_left.remove(field)
+                    matches.append(match)
+                    # break
+
+            if self._USER_DICT:
+                for field in target_keys_left[:]:
                     replacements = self._USER_DICT.replacements(field)[field]
+                    # logger.debug(f'Property \'{field}\' not found.')
                     logger.debug(f'Known replacements: {str(replacements)}')
                     for replacement in replacements:
-                        if replacement in given_structure.keys():
+                        if replacement in given_keys_left[:]:
                             logger.debug(f'Matching replacement found: {replacement}')
-                            matches.append(self._match_types((field, target_structure[field]),
-                                                             (replacement, given_structure[replacement]), root=root))
-                    continue
+                            match = self._match_types((field, target_structure[field]),
+                                                      (replacement, given_structure[replacement]), root=root)
+                            logger.debug(f"Before: {target_keys_left}")
+                            target_keys_left.remove(field)
+                            logger.debug(f"Before: {target_keys_left}")
+                            given_keys_left.remove(replacement)
+                            matches.append(match)
+                            break
+
             if self._USER_RDF:
-                synonyms = self._USER_RDF.synonyms(field)
-                logger.debug(f'Known synonyms: {str(synonyms)}')
-                for synonym in synonyms:
-                    if synonym in given_structure.keys():
-                        logger.debug(f'Matching synonym found: {synonym}')
-                        matches.append(self._match_types((field, target_structure[field]),
-                                                         (synonym, given_structure[synonym]), root=root))
-                    continue
-                subclasses = self._USER_RDF.subclasses(field)
-                logger.debug(f'Known subclasses: {str(subclasses)}')
-                for subclass in subclasses:
-                    if subclass in given_structure.keys():
-                        logger.debug(f'Matching subclass found: {subclass}')
-                        matches.append(self._match_types((field, target_structure[field]),
-                                                         (subclass, given_structure[subclass]), root=root))
-                    continue
+                for field in target_keys_left[:]:
+                    print(field)
+                    logger.warning(str(target_keys_left) + " LEFT")
+                    synonyms = self._USER_RDF.synonyms(field)
+                    logger.debug(f'Known {field} synonyms: {str(synonyms)}')
+                    for synonym in synonyms:
+                        if synonym in given_keys_left[:]:
+                            logger.debug(f'Matching synonym found: {synonym}')
+                            match = self._match_types((field, target_structure[field]),
+                                                      (synonym, given_structure[synonym]), root=root)
+                            target_keys_left.remove(field)
+                            logger.debug(f"After match: {target_keys_left}")
+                            given_keys_left.remove(synonym)
+                            matches.append(match)
+                            break
+
+                for field in target_keys_left[:]:
+                    subclasses = self._USER_RDF.subclasses(field)
+                    logger.debug(f'Known {field} subclasses: {str(subclasses)}')
+                    for subclass in subclasses:
+                        if subclass in given_keys_left[:]:
+                            logger.debug(f'Matching subclass found: {subclass}')
+                            match = self._match_types((field, target_structure[field]),
+                                                      (subclass, given_structure[subclass]), root=root)
+                            target_keys_left.remove(field)
+                            given_keys_left.remove(subclass)
+                            matches.append(match)
+                            break
+
+                for field in target_keys_left[:]:
+                    possible_conversions = self._USER_RDF.possible_conversions(field)
+                    logger.debug(f"Known conversions: {str(possible_conversions)}")
+                    for conversion in possible_conversions:
+                        if conversion in given_keys_left[:]:
+                            logger.debug(f'Matching conversion found: {conversion}')
+                            match = self._match_conversion(field, conversion)
+
+                            target_keys_left.remove(field)
+                            given_keys_left.remove(conversion)
+                            matches.append(match)
+                            # break
+        except NotImplementedError as methoderror:
+            logger.warning(methoderror)
+
         return filter(None, matches)
 
     def _match_types(self, InputField, OutputField, *, root=None):
@@ -193,6 +247,16 @@ class JSONGenerator:
             except AttributeError:
                 raise NotImplementedError(f'{method} transformation is not implemented yet!')
 
+    def _match_conversion(self, InputField, OutputField):
+        logger.warning(str(self._USER_RDF.conversion(InputField, OutputField)))
+        conversion = str(self._USER_RDF.conversion(InputField, OutputField)[0])
+        logger.debug(f"Using {conversion} conversion!")
+        try:
+            return [self._OUTPUT_SCHEMA.path(InputField),
+                    self._INPUT_SCHEMA.path(OutputField), getattr(transforms, conversion).__name__]
+        except AttributeError:
+            raise NotImplementedError(f'{conversion} transformation is not implemented yet!')
+
     def _struct_cmp(self, struct1, struct2):
         """
         Helper function to compare dicts
@@ -210,7 +274,8 @@ class JSONGenerator:
     def generate_code(self):
         """
         Function fill loaded template
-        :return: 
+        :return: String containing generated code
+        :rtype: String
         :raise: Exception
         """
         try:
@@ -221,7 +286,7 @@ class JSONGenerator:
             return
 
         filling = list(self.transform(self._OUTPUT_SCHEMA, self._INPUT_SCHEMA))
-        logger.debug(filling)
+        # logger.debug(filling)
         imports = list(set([trans[2] for trans in filling]))
         # logger.debug(imports)
 
@@ -262,11 +327,13 @@ if __name__ == '__main__':
 
     gen = JSONGenerator()
     gen.set_template_path()
-    # gen.add_dictionary('../utils/rgb.csv')
-    gen.load_rdf_from_file('../rdf/colors.rdf')
-    # gen.RDF_synonym()
-    gen.load_schemas_from_file('../schema/air_temperature', '../schema/temperature')
-    print(gen.generate_code())
+    # # gen.add_dictionary('../utils/rgb.csv')
+    # gen.load_rdf_from_file('../rdf/colors.rdf')
+    # # gen.RDF_synonym()
+    # gen.load_schemas_from_file('../schema/air_temperature', '../schema/temperature')
+    # print(gen.generate_code())
+    print(gen.get_template_ext())
+
 
     # print(gen.find_path('deg', gen._PROCESSED_INPUT)[2])
     # print(gen.RDF_synonym('Red'))

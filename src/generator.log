@@ -422,3 +422,41 @@ Generator:181           :    generate_code(): [[['wind', 'value'], ['measurement
 Generator:190           :    generate_code(): Code generated!
 
 
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py
+Generator:45            :         __init__(): JSONGenerator created!
+Generator:56            : set_template_path(): Template loaded from path: ../templates/python_service.py

@@ -1,0 +1,9 @@
+{
+    "title": "PL units",
+    "type": "object",
+    "properties": {
+            "PLN":{ "type": "number"},
+            "TempC":{ "type": "integer"}
+        }
+}
+

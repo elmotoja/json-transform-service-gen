@@ -1,0 +1,9 @@
+{
+    "title": "US units",
+    "type": "object",
+    "properties": {
+            "USD":{ "type": "number"},
+            "TempF":{ "type": "integer"}
+        }
+}
+

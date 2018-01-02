@@ -3,15 +3,13 @@
     "type": "object",
     "properties": {
         "rgb":{
-        "red": {
+        "Red": {
             "type": "integer",
-            "minimum": 0,
-            "maximum": 255
+
         },
-        "grassy": {
+        "Green": {
             "type": "integer",
-            "minimum": 0,
-            "maximum": 255
+
         },
         "Blue": {
             "type": "string",

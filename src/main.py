@@ -48,6 +48,20 @@ def main(argv):
         elif opt in ("-r", "--run"):
             gen.run_service()
 
+# SAMPLE CALLS
+# nested dict
+# py main.py - i../schema/nested - o../schema/nested2 - p
+
+# ontology based conversion (USD, F -> PLN, C)
+# py main.py -i ../schema/us_units -o ../schema/pl_units -f ../rdf/example.rdf -p
+
+# transformation not implemented (KtoF)
+# py main.py -i ../schema/tempK -o ../schema/tempF -f ../rdf/example.rdf -p
+
+# ontology based synonyms match with some type transformations
+# py main.py -i ../schema/rgb -o ../schema/rgb2 -f ../rdf/colors.rdf -p
+
+
 
 # if __name__ == '__main__':
 #     try:

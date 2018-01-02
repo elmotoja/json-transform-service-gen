@@ -4,13 +4,13 @@
     "definitions": {},
     "id": "http://example.com/example.json",
     "properties": {
-        "blue": {
+        "Niebieski": {
             "type": "integer"
         },
-        "green": {
+        "Zielony": {
             "type": "string"
         },
-        "czerwony": {
+        "Czerwony": {
             "type": "integer"
         }
     },

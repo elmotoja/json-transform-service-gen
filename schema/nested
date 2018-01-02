@@ -1,11 +1,13 @@
 {
-    "title": "Nested Schema",
-    "type": "object",
-    "properties": {
-        "colors":{
-            "Red": {
-                "type": "string"
-                }
+"title": "Nested Schema",
+"type": "object",
+"properties": {
+    "nested": {
+        "dictionary": {
+            "latitude":{"type": "string"},
+            "longitude":{"type": "string"}
+               }
             }
         }
+    }
 }

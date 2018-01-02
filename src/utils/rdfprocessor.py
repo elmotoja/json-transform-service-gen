@@ -6,6 +6,9 @@ logger.setLevel(logging.DEBUG)
 
 
 class RDFProcessor(object):
+    """
+    Class responsible for processing rdf file
+    """
     def __init__(self):
         self._RDF = None
         logger.debug('{} created!'.format(self.__class__.__name__))
@@ -16,6 +19,12 @@ class RDFProcessor(object):
         logger.debug(f'RDF loaded from path: {file_path}')
 
     def subclasses(self, thing):
+        """
+        Use this function to get 'thing' subclasses
+        :param thing: 
+        :return: List of subclasses based on rdf knowledge
+        :rtype: list
+        """
         try:
             qres = self._RDF.query("""SELECT ?label WHERE {
                                    ?Class rdfs:label "%s" .
@@ -30,6 +39,12 @@ class RDFProcessor(object):
             logger.warning('RDF must be added before query')
 
     def synonyms(self, word):
+        """
+        Use this function to get 'word' synonyms 
+        :param word: 
+        :return: List of synonyms based on rdf knowledge
+        :rtype: list
+        """
         try:
             qres = self._RDF.query("""SELECT ?label WHERE {
                                    ?Class rdfs:label "%s".
@@ -37,12 +52,66 @@ class RDFProcessor(object):
                                    }""" % word.capitalize())
 
             syn = ['%s' % row for row in qres]
-            synonyms = [s.lower() for s in syn]
+            synonyms = [s for s in syn]
             return synonyms
+        except AttributeError:
+            logger.warning('RDF must be added before query')
+
+    def possible_conversions(self, thing):
+        """
+        Use this function to get possible 'thing' transformations
+        :param thing: 
+        :return: Dictionary where keys are classes 'thing' can be transform and values are transformations names 
+        :rtype: dict
+        """
+        try:
+            # qres = self._RDF.query("""SELECT ?OtherLabel ?relLabel WHERE {
+            #                        ?Class rdfs:label "%s" .
+            #                        ?Class ?any ?OtherClass .
+            #                        ?any rdfs:label ?relLabel .
+            #                        ?OtherClass rdfs:label ?OtherLabel .
+            #                        }""" % thing)
+            qres = self._RDF.query("""SELECT ?label WHERE {
+                                   ?Class rdfs:label "%s" .
+                                   ?OtherClass ?any ?Class .
+                                   ?OtherClass rdfs:label ?label .
+                                   }""" % thing)
+
+            trans = ['%s' % row for row in qres]
+            transformations = [s for s in trans]
+
+            return transformations
+        except AttributeError:
+            logger.warning('RDF must be added before query')
+
+    def conversion(self, inField, outField):
+        """
+        Use this function to get possible 'thing' transformations
+        :param thing: 
+        :return: Dictionary where keys are classes 'thing' can be transform and values are transformations names 
+        :rtype: dict
+        """
+        try:
+            qres = self._RDF.query("""SELECT ?label WHERE {
+                                  ?Class rdfs:label "%s" .
+                                  ?InToClass rdfs:label "%s" .
+                                  ?Class ?trans ?InToClass .
+                                  ?trans rdfs:label ?label
+                                  }""" % (outField, inField))
+
+            trans = ['%s' % row for row in qres]
+            transformations = [s for s in trans]
+            return transformations
         except AttributeError:
             logger.warning('RDF must be added before query')
 
 if __name__ == "__main__":
     test = RDFProcessor()
-    test.load_rdf_from_file('../../rdf/colors.rdf')
-    print(test.synonyms('Red'))
+    test.load_rdf_from_file('../../rdf/pexample.rdf')
+
+    temp = "AreaKM2"
+    for possible in test.possible_conversions(temp):
+        print(possible+" "+str(test.conversion(temp, possible)))
+
+    for sub in test.subclasses(temp):
+        print(sub)

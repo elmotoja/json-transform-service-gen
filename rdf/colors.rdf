@@ -14,3 +14,6 @@ col:Grassy rdf:type owl:Class .
 col:Grassy rdfs:label "Grassy" .
 col:Grassy rdfs:subClassOf col:Green .
 
+col:Blue rdf:type owl:Class .
+col:Blue rdfs:label "Blue" .
+col:Blue rdfs:label "Niebieski" .

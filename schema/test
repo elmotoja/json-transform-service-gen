@@ -2,10 +2,7 @@
     "title": "Type Test",
     "type": "object",
     "properties": {
-        "wind": {
-            "value": {
-                "type": "integer"
-                    }
+        "wirdWord": { "type": "integer" }
     }
 }
 }

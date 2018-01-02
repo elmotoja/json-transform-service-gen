@@ -3,6 +3,7 @@
 @prefix owl:	<http://www.w3.org/2002/07/owl#> .
 @prefix tmp: <http://www.temperature.org/> .
 @prefix trans: <http://www.example.com/> .
+@prefix ex: <http://currency.com/> .
 
 tmp:Temperature rdf:type owl:Class .
 tmp:Temperature rdfs:label "Temperature" .
@@ -14,24 +15,30 @@ tmp:Air_temperature rdfs:subClassOf tmp:Temperature .
 
 
 tmp:TempC rdf:type owl:Class .
-# tmp:TempC rdfs:subClassOf tmp:Temperature .
+tmp:TempC rdfs:subClassOf tmp:Temperature .
 tmp:TempC rdfs:label "TempC" .
 tmp:TempC trans:CtoK tmp:TempK .
 tmp:TempC trans:CtoF tmp:TempF .
 
 tmp:TempK rdf:type owl:Class .
-# tmp:TempK rdfs:subClassOf tmp:Temperature .
 tmp:TempK rdfs:label "TempK" .
 tmp:TempK trans:KtoC tmp:TempC .
 tmp:TempK trans:KtoF tmp:TempF .
 
 tmp:TempF rdf:type owl:Class .
-# tmp:TempF rdfs:subClassOf tmp:Temperature .
 tmp:TempF rdfs:label "TempF" .
 tmp:TempF trans:FtoC tmp:TempC .
 tmp:TempF trans:FtoK tmp:TempK .
 
-#-----------TRANSFORMS-----------------------------------
+ex:USD rdf:type owl:Class .
+ex:USD rdfs:label "USD" .
+ex:USD trans:USDtoPLN ex:PLN .
+
+ex:PLN rdf:type owl:Class .
+ex:PLN rdfs:label "PLN" .
+ex:PLN trans:PLNtoUSD ex:USD .
+
+#------TEMP CONVERSIONS---------
 trans:CtoK rdf:type owl:Class .
 trans:CtoK rdfs:label "CtoK" .
 
@@ -49,3 +56,10 @@ trans:FtoC rdfs:label "FtoC" .
 
 trans:FtoK rdf:type owl:Class .
 trans:FtoK rdfs:label "FtoK" .
+#---CURRENCY CONVERSIONS---------
+trans:USDtoPLN rdf:type owl:Class .
+trans:USDtoPLN rdfs:label "USDtoPLN" .
+
+trans:PLNtoUSD rdf:type owl:Class .
+trans:PLNtoUSD rdfs:label "PLNtoUSD" .
+#--------------------------------

@@ -2,9 +2,9 @@
     "title": "Temperature",
     "type": "object",
     "properties": {
-        "wind":{
+        "temp":{
             "value": {"type": "integer"},
-            "deg": {"type":"string"}
+            "unit": {"type":"string"}
         }
             }
 }
